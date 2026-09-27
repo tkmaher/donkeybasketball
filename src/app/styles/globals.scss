@@ -1,0 +1,391 @@
+@use "sass:map";
+@use "variables" as v;
+
+// ---------------------------------------------------------------------------
+// Minimal reset — replaces the parts of Tailwind's Preflight this file
+// actually relied on now that `@import "tailwindcss"` is gone: border-box
+// sizing everywhere, and font/color inheritance + zeroed margins on native
+// form controls (otherwise inputs/buttons revert to browser defaults).
+// ---------------------------------------------------------------------------
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  height: 100%;
+  line-height: 1.5;
+  cursor: none !important;
+  interpolate-size: allow-keywords; 
+}
+
+html,
+body {
+  max-width: 100vw;
+  overflow-x: hidden;
+  background-color: v.$background;
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  font-family: monospace;
+  color: v.$copy;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+  cursor: none !important;
+}
+
+button,
+input {
+  font: inherit;
+  color: inherit;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  appearance: none;
+}
+
+input::placeholder {
+  color: inherit;
+  opacity: 0.6;
+}
+
+// ---------------------------------------------------------------------------
+// Custom "+" cursor
+// ---------------------------------------------------------------------------
+
+.mouse-circle {
+  position: fixed;
+  border-radius: 50%;
+  font-size: 100px;
+  font-weight: 200;
+  pointer-events: none;
+  z-index: 10;
+  transform: translate(-50%, -50%);
+  mix-blend-mode: difference;
+}
+
+// ---------------------------------------------------------------------------
+// Row of strips — horizontally scrollable
+// ---------------------------------------------------------------------------
+
+.side-strip-row {
+  display: flex;
+  align-items: flex-start;
+  width: 100%;
+  max-width: 100vw;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x proximity;
+}
+
+// ---------------------------------------------------------------------------
+// Side strip
+// ---------------------------------------------------------------------------
+
+$sizes: (
+  xl: 120px,
+  lg: 60px,
+  md: 40px,
+  field: 15px,
+  sm: 12px,
+  xs: 8px,
+);
+
+$sizes-collapsed: (
+  xl: 22px,
+  lg: 18px,
+  md: 16px,
+  field: 13px,
+  sm: 10px,
+  xs: 0px,
+);
+
+@function fsize($key) {
+  @return map.get($sizes, $key);
+}
+
+@function fsize-collapsed($key) {
+  @return map.get($sizes-collapsed, $key);
+}
+
+$motion: 0.3s cubic-bezier(0.075, 0.82, 0.165, 1);
+
+.side-strip {
+  position: relative; 
+  display: flex;
+  flex-flow: column wrap;
+  flex: 0 0 auto; // inside .side-strip-row: keep intrinsic width, don't shrink
+  scroll-snap-align: start;
+
+  height: calc(100dvh - 2em);
+  overflow: hidden;
+  width: fit-content; // grows with the title
+  max-width: min(90dvw, 50rem);
+  min-width: 18em;
+  margin: 1em;
+
+  border: 0.5px solid transparent;
+  transition:
+    width $motion,
+    max-width $motion,
+    min-width $motion,
+    border-color 0.2s ease;
+
+  * {
+    min-width: 0;
+    transition: font-size $motion;
+    gap: 1px;
+  }
+
+  &:hover {
+    mix-blend-mode: difference;
+    border-color: v.$copy;
+  }
+
+  &__corners {
+    position: absolute;
+    display: flex;
+    justify-content: space-between;
+
+    &--top {
+      inset: 0 0 auto 0;
+    }
+    &--bottom {
+      inset: auto 0 0 0;
+    }
+  }
+
+  &__corner {
+    width: 3em;
+    height: 3em;
+    background-color: transparent !important;
+    transition: width $motion, height $motion;
+
+    &--tl {
+      border-left: 1px solid white !important;
+      border-top: 1px solid white !important;
+    }
+    &--tr {
+      border-right: 1px solid white !important;
+      border-top: 1px solid white !important;
+    }
+    &--bl {
+      border-left: 1px solid white !important;
+      border-bottom: 1px solid white !important;
+    }
+    &--br {
+      border-right: 1px solid white !important;
+      border-bottom: 1px solid white !important;
+    }
+  }
+
+  // ---- header: title + score ----------------------------------------------
+
+  &__header,
+  &__footer,
+  &__nav-links,
+  &__form {
+    width: 100%;
+  }
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-self: flex-start;
+    padding: 1em 1em 0 1em;
+    width: 100%;
+    min-width: 0;
+  }
+
+  &__titles {
+    display: flex;
+    flex-flow: column wrap;
+    flex: 1 1 auto; 
+    min-width: 0;  
+    width: auto;   
+  }
+
+  &__title-row {
+    display: flex;
+    min-width: 0;
+    width: auto;
+  }
+
+  &__title {
+    font-size: fsize(xl);
+    line-height: 1em;
+    flex: 1 1 auto;
+    min-width: 0;
+    width: auto;             
+    overflow-wrap: normal;
+    word-break: keep-all;
+    white-space: normal;
+    background-color: none !important;
+  }
+
+  &__score {
+    display: flex;
+    flex-flow: row wrap;
+    align-items: flex-end;
+    flex: 0 0 auto; 
+    width: auto; 
+  }
+
+  &__score-dots {
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+    font-size: fsize(xs);
+  }
+
+  &__score-value {
+    font-size: fsize(md);
+  }
+
+  &__score-plus {
+    font-size: fsize(xl);
+  }
+
+  &__glyph {
+    &--grow {
+      flex-grow: 1;
+    }
+    &--sm {
+      font-size: fsize(sm);
+    }
+    &--xs {
+      font-size: fsize(xs);
+    }
+  }
+
+  &__spacer {
+    max-width: 1em;
+    flex-grow: 1;
+    align-self: stretch; 
+    min-height: 0;
+    flex-grow: 1;
+  }
+
+  &__marg  {
+    margin-left: calc(1em + 1px);
+
+  }
+
+  &__footer {
+    display: flex;
+    flex-flow: row wrap;
+    align-items: flex-end;
+    align-self: flex-end;
+    padding: 0 1em 1em 1em;
+  }
+
+  &__nav-row {
+    display: flex;
+    flex-flow: row wrap;
+    align-items: flex-end;
+  }
+
+  &__index {
+    font-size: fsize(lg);
+    align-self: flex-end;
+  }
+
+  &__nav-links {
+    display: flex;
+    flex-flow: row wrap-reverse;
+  }
+
+  &__nav-link {
+    font-size: fsize(sm);
+
+    &--grow {
+      flex-grow: 1;
+    }
+  }
+
+  &__form {
+    display: flex;
+  }
+
+  &__input {
+    font-size: fsize(field);
+    flex-grow: 1;
+  }
+
+  &__submit {
+    font-size: fsize(field);
+    width: fit-content;
+  }
+
+  &__collapse-toggle {
+    font-size: fsize(sm);
+    text-align: right;
+    padding-top: 0.5em;
+    z-index: 10 !important;
+    margin: auto;
+    width: 100%;
+  }
+
+  // ---- leaf vs. container hover states -------------------------------------
+
+  :has(*) {
+    border: 0.5px solid transparent;
+  }
+
+  :not(:has(*)) {
+    padding: 0 5px;
+    z-index: 9;
+    background-color: v.$background;
+    user-select: none;
+    border: 0.5px solid transparent;
+
+    &:hover {
+      mix-blend-mode: difference;
+      border-color: v.$copy;
+      // color: v.$background;
+      // background-color: v.$copy;
+    }
+  }
+
+  // ---- collapsed state ------------------------------------------------------
+
+  &--collapsed {
+    width: 20dvw;
+    max-width: 20dvw;
+    min-width: 0;
+
+    .side-strip__corner {
+      width: 1.25em;
+      height: 1.25em;
+    }
+
+    $collapse-targets: (
+      ".side-strip__title": xl,
+      ".side-strip__score-plus": xs,
+      ".side-strip__index": lg,
+      ".side-strip__score-value": xs,
+      ".side-strip__input": field,
+      ".side-strip__submit": field,
+      ".side-strip__collapse-toggle": field,
+      ".side-strip__nav-link": sm,
+      ".side-strip__glyph--sm": xs,
+      ".side-strip__glyph--xs": xs,
+      ".side-strip__score-dots": xs,
+    );
+
+    @each $selector, $key in $collapse-targets {
+      #{$selector} {
+        font-size: fsize-collapsed($key);
+      }
+    }
+  }
+}
