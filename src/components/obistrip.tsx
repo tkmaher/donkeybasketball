@@ -1,5 +1,6 @@
 "use client";
 
+import ReactLenis from "lenis/react";
 import Link from "next/link";
 import { useEffect, useState, type ReactNode } from "react";
 
@@ -34,7 +35,13 @@ export function SideStripRow({ children }: { children: ReactNode }) {
   return (
     <div className="side-strip-row">
       <Cursor />
-      {children}
+      <ReactLenis root options={{
+          duration: 1.2,
+          lerp: 0.1,     
+          smoothWheel: true 
+      }}>
+        {children}
+      </ReactLenis>
     </div>
   );
 }
@@ -52,9 +59,18 @@ export default function SideStrip() {
       </div>
 
       <div className="side-strip__header">
+      <button
+          type="button"
+          className="side-strip__collapse-toggle"
+          onClick={() => setCollapsed((c) => !c)}
+          aria-expanded={!collapsed}
+          aria-label={collapsed ? "Expand strip" : "Collapse strip"}
+        >
+          {collapsed ? "Expand" : "Collapse"}
+        </button>
         <div className="side-strip__titles">
           <div className="side-strip__title-row">
-            <div className="side-strip__title">Donkey</div>
+            <div className="side-strip__title2">Donkey</div>
             <div className="side-strip__glyph side-strip__glyph--sm side-strip__glyph--grow">
               +
             </div>
@@ -74,11 +90,12 @@ export default function SideStrip() {
             <div>+</div>
             <div>+</div>
           </div>
+          <div className="side-strip__spacer"/>
           <div className="side-strip__score-value">0</div>
           <div className="side-strip__score-plus">+</div>
-          <div className="side-strip__score-dots">_ _ _ _ _ _ _ _ _ _ _</div>
-          <div className="side-strip__spacer"/>
-          <div className="side-strip__score-dots">/\/\/\</div>
+          <div className="side-strip__score-dots">
+            {`  -   `}
+        </div>
         </div>
         <div className="side-strip__spacer side-strip__marg"/>
 
@@ -125,15 +142,7 @@ export default function SideStrip() {
         </form>
 
 
-        <button
-          type="button"
-          className="side-strip__collapse-toggle"
-          onClick={() => setCollapsed((c) => !c)}
-          aria-expanded={!collapsed}
-          aria-label={collapsed ? "Expand strip" : "Collapse strip"}
-        >
-          {collapsed ? "Expand" : "Collapse"}
-        </button>
+        
       </div>
 
       <div className="side-strip__corners side-strip__corners--bottom">

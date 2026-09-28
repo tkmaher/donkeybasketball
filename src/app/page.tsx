@@ -1,3 +1,4 @@
+import MusicStrip from "@/components/music";
 import SideStrip, { SideStripRow } from "@/components/obistrip";
 
 export default function Page() {
@@ -5,7 +6,6 @@ export default function Page() {
     <div>
       <SideStripRow>
         <SideStrip/>
- 
 
       </SideStripRow>
     </div>

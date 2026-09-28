@@ -22,13 +22,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
       <body>
-        <ReactLenis root options={{
-          duration: 1.2,
-          lerp: 0.1,     
-          smoothWheel: true 
-        }}>
+
           {children}
-        </ReactLenis>
       </body>
     </html>
   );

@@ -32,7 +32,7 @@ body {
 
 body {
   font-family: monospace;
-  color: v.$copy;
+  color: v.$copy2;
   font-size: 12px;
   font-weight: 500;
 }
@@ -66,10 +66,10 @@ input::placeholder {
 .mouse-circle {
   position: fixed;
   border-radius: 50%;
-  font-size: 100px;
+  font-size: 50px;
   font-weight: 200;
   pointer-events: none;
-  z-index: 10;
+  z-index: 11;
   transform: translate(-50%, -50%);
   mix-blend-mode: difference;
 }
@@ -93,19 +93,19 @@ input::placeholder {
 // ---------------------------------------------------------------------------
 
 $sizes: (
-  xl: 120px,
+  xxl: 80px,
+  xl: 70px,
   lg: 60px,
   md: 40px,
-  field: 15px,
   sm: 12px,
   xs: 8px,
 );
 
 $sizes-collapsed: (
-  xl: 22px,
+  xxl: 22px,
+  xl: 20px,
   lg: 18px,
   md: 16px,
-  field: 13px,
   sm: 10px,
   xs: 0px,
 );
@@ -127,12 +127,12 @@ $motion: 0.3s cubic-bezier(0.075, 0.82, 0.165, 1);
   flex: 0 0 auto; // inside .side-strip-row: keep intrinsic width, don't shrink
   scroll-snap-align: start;
 
-  height: calc(100dvh - 2em);
+  height: calc(100dvh - 1em);
+  margin: 0.5em;
   overflow: hidden;
-  width: fit-content; // grows with the title
-  max-width: min(90dvw, 50rem);
+  width: calc(100dvw - 1em);
+  max-width: 100dvw;
   min-width: 18em;
-  margin: 1em;
 
   border: 0.5px solid transparent;
   transition:
@@ -148,8 +148,10 @@ $motion: 0.3s cubic-bezier(0.075, 0.82, 0.165, 1);
   }
 
   &:hover {
-    mix-blend-mode: difference;
-    border-color: v.$copy;
+    :not(:has(*)) {
+      background-color: v.$background2;
+      
+    }
   }
 
   &__corners {
@@ -172,20 +174,20 @@ $motion: 0.3s cubic-bezier(0.075, 0.82, 0.165, 1);
     transition: width $motion, height $motion;
 
     &--tl {
-      border-left: 1px solid white !important;
-      border-top: 1px solid white !important;
+      border-left: 0.5px solid white !important;
+      border-top: 0.5px solid white !important;
     }
     &--tr {
-      border-right: 1px solid white !important;
-      border-top: 1px solid white !important;
+      border-right: 0.5px solid white !important;
+      border-top: 0.5px solid white !important;
     }
     &--bl {
-      border-left: 1px solid white !important;
-      border-bottom: 1px solid white !important;
+      border-left: 0.5px solid white !important;
+      border-bottom: 0.5px solid white !important;
     }
     &--br {
-      border-right: 1px solid white !important;
-      border-bottom: 1px solid white !important;
+      border-right: 0.5px solid white !important;
+      border-bottom: 0.5px solid white !important;
     }
   }
 
@@ -220,9 +222,8 @@ $motion: 0.3s cubic-bezier(0.075, 0.82, 0.165, 1);
     width: auto;
   }
 
-  &__title {
-    font-size: fsize(xl);
-    line-height: 1em;
+  &__title, &__title2 {
+    line-height: 1.2em;
     flex: 1 1 auto;
     min-width: 0;
     width: auto;             
@@ -230,6 +231,14 @@ $motion: 0.3s cubic-bezier(0.075, 0.82, 0.165, 1);
     word-break: keep-all;
     white-space: normal;
     background-color: none !important;
+  }
+
+  &__title {
+    font-size: fsize(xxl);
+  }
+
+  &__title2 {
+    font-size: fsize(xl);
   }
 
   &__score {
@@ -317,12 +326,12 @@ $motion: 0.3s cubic-bezier(0.075, 0.82, 0.165, 1);
   }
 
   &__input {
-    font-size: fsize(field);
+    font-size: fsize(sm);
     flex-grow: 1;
   }
 
   &__submit {
-    font-size: fsize(field);
+    font-size: fsize(sm);
     width: fit-content;
   }
 
@@ -341,27 +350,36 @@ $motion: 0.3s cubic-bezier(0.075, 0.82, 0.165, 1);
     border: 0.5px solid transparent;
   }
 
+  @keyframes flicker {
+    0% { background-color: v.$background2; }
+    50% { background-color: v.$background; }
+    99% { background-color: v.$background; }
+    100% { background-color: v.$background2; }
+  }
+
   :not(:has(*)) {
     padding: 0 5px;
     z-index: 9;
     background-color: v.$background;
     user-select: none;
     border: 0.5px solid transparent;
-
+    transition: background-color $motion color $motion;
     &:hover {
-      mix-blend-mode: difference;
+      animation: flicker 0.1s ease-in-out;
+      animation-iteration-count: 1;
+      animation-fill-mode: forwards; 
       border-color: v.$copy;
-      // color: v.$background;
-      // background-color: v.$copy;
+      color: v.$copy;
     }
   }
 
   // ---- collapsed state ------------------------------------------------------
 
   &--collapsed {
-    width: 20dvw;
     max-width: 20dvw;
     min-width: 0;
+    max-height: fit-content;
+    min-height: 0;
 
     .side-strip__corner {
       width: 1.25em;
@@ -369,13 +387,14 @@ $motion: 0.3s cubic-bezier(0.075, 0.82, 0.165, 1);
     }
 
     $collapse-targets: (
-      ".side-strip__title": xl,
+      ".side-strip__title": xxl,
+      ".side-strip__title2": xl,
       ".side-strip__score-plus": xs,
       ".side-strip__index": lg,
       ".side-strip__score-value": xs,
-      ".side-strip__input": field,
-      ".side-strip__submit": field,
-      ".side-strip__collapse-toggle": field,
+      ".side-strip__input": sm,
+      ".side-strip__submit": sm,
+      ".side-strip__collapse-toggle": sm,
       ".side-strip__nav-link": sm,
       ".side-strip__glyph--sm": xs,
       ".side-strip__glyph--xs": xs,
