@@ -66,12 +66,16 @@ input::placeholder {
 .mouse-circle {
   position: fixed;
   border-radius: 50%;
-  font-size: 50px;
-  font-weight: 200;
   pointer-events: none;
-  z-index: 11;
-  transform: translate(-50%, -50%);
+  z-index: 100;
   mix-blend-mode: difference;
+
+  svg {
+    transform: translate(-50%, -50%);
+    fill: v.$copy;
+    height: 50px;
+    width: 50px;
+  }
 }
 
 // ---------------------------------------------------------------------------
@@ -201,6 +205,7 @@ $motion: 0.3s cubic-bezier(0.075, 0.82, 0.165, 1);
   }
   &__header {
     display: flex;
+    flex-direction: column;
     justify-content: space-between;
     align-self: flex-start;
     padding: 1em 1em 0 1em;
@@ -335,14 +340,6 @@ $motion: 0.3s cubic-bezier(0.075, 0.82, 0.165, 1);
     width: fit-content;
   }
 
-  &__collapse-toggle {
-    font-size: fsize(sm);
-    text-align: right;
-    padding-top: 0.5em;
-    z-index: 10 !important;
-    margin: auto;
-    width: 100%;
-  }
 
   // ---- leaf vs. container hover states -------------------------------------
 

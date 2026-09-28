@@ -2,30 +2,9 @@
 
 import ReactLenis from "lenis/react";
 import Link from "next/link";
-import { useEffect, useState, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode, useContext, MouseEvent } from "react";
+import { CursorContext } from "./cursorcontext";
 
-/**
- * The custom "+" cursor. Mount this once (via <SideStripRow>, or on its own)
- * rather than inside every <SideStrip> — otherwise N strips means N
- * mousemove listeners and N overlapping cursors.
- */
-export function Cursor() {
-  const [pos, setPos] = useState({ x: 0, y: 0 });
-
-  useEffect(() => {
-    const handleMouseMove = (event: MouseEvent) => {
-      setPos({ x: event.clientX, y: event.clientY });
-    };
-    window.addEventListener("mousemove", handleMouseMove);
-    return () => window.removeEventListener("mousemove", handleMouseMove);
-  }, []);
-
-  return (
-    <div className="mouse-circle" style={{ left: pos.x, top: pos.y }}>
-      +
-    </div>
-  );
-}
 
 /**
  * Lays out any number of <SideStrip>s in a row that scrolls horizontally
@@ -34,7 +13,6 @@ export function Cursor() {
 export function SideStripRow({ children }: { children: ReactNode }) {
   return (
     <div className="side-strip-row">
-      <Cursor />
       <ReactLenis root options={{
           duration: 1.2,
           lerp: 0.1,     
@@ -46,28 +24,47 @@ export function SideStripRow({ children }: { children: ReactNode }) {
   );
 }
 
+const INTERACTIVE_SELECTOR = "button, a, input, textarea, select, label";
+
+const isInteractive = (target: EventTarget) =>
+  target instanceof Element && target.closest(INTERACTIVE_SELECTOR) !== null;
+
 export default function SideStrip() {
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [collapsed, setCollapsed] = useState(false);
 
+  const { cursorSetter } = useContext(CursorContext);
+
+  // Cursor label for a non-interactive hover, given the current state
+  const toggleCursor = (isCollapsed: boolean) =>
+    isCollapsed ? "expand" : "collapse";
+
+  // mouseover bubbles, so this fires as the pointer moves between children
+  const handleMouseOver = (e: MouseEvent<HTMLDivElement>) => {
+    cursorSetter(isInteractive(e.target) ? "plus" : toggleCursor(collapsed));
+  };
+
+  const handleClick = (e: MouseEvent<HTMLDivElement>) => {
+    if (isInteractive(e.target)) return;
+    setCollapsed(!collapsed);
+    cursorSetter(toggleCursor(!collapsed)); // label for the *new* state
+  };
+
   return (
-    <div className={`side-strip${collapsed ? " side-strip--collapsed" : ""}`}>
+    <div
+      className={`side-strip${collapsed ? " side-strip--collapsed" : ""}`}
+      onMouseOver={handleMouseOver}
+      onMouseLeave={() => cursorSetter("plus")}
+      onClick={handleClick}
+    >
       <div className="side-strip__corners side-strip__corners--top">
         <div className="side-strip__corner side-strip__corner--tl" />
         <div className="side-strip__corner side-strip__corner--tr" />
       </div>
 
       <div className="side-strip__header">
-      <button
-          type="button"
-          className="side-strip__collapse-toggle"
-          onClick={() => setCollapsed((c) => !c)}
-          aria-expanded={!collapsed}
-          aria-label={collapsed ? "Expand strip" : "Collapse strip"}
-        >
-          {collapsed ? "Expand" : "Collapse"}
-        </button>
+      
         <div className="side-strip__titles">
           <div className="side-strip__title-row">
             <div className="side-strip__title2">Donkey</div>
