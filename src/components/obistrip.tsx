@@ -24,15 +24,54 @@ export function SideStripRow({ children }: { children: ReactNode }) {
   );
 }
 
-const INTERACTIVE_SELECTOR = "button, a, input, textarea, select, label";
+const INTERACTIVE_SELECTOR = "button, a, input, textarea, select, label, div";
 
-const isInteractive = (target: EventTarget) =>
-  target instanceof Element && target.closest(INTERACTIVE_SELECTOR) !== null;
+const isInteractive = (target: EventTarget) => {
+  if (!(target instanceof Element) || (target.children.length)) return null;
+  const closest = target.closest(INTERACTIVE_SELECTOR) ?? null;
+  if (!closest) return null;
+  if (closest.matches("button") || closest.matches("a"))
+    return "donut";
+  if (closest.matches("input") || closest.matches("textarea"))
+    return "text";
+  return "plus";
+}
 
 export default function SideStrip() {
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [collapsed, setCollapsed] = useState(false);
+
+  const [count1, setCount1] = useState(0);
+  const [count2, setCount2] = useState(0);
+
+  const [donkey, setDonkey] = useState('######');
+  const [basketball, setBasketball] = useState('##########');
+  const [counter, setCounter] = useState(0);
+
+  useEffect(() => {
+    const d = "Donkey";
+    const b = "Basketball";
+    const intervalId = setInterval(() => {
+      let rand1 = "";
+      let rand2 = "";
+      if (donkey != d) {
+        for (let i = 0; i < donkey.length - counter; i++) {
+          rand1 += String.fromCharCode(Math.floor(Math.random() * 65 + 65));
+        }
+        setDonkey(d.slice(0, counter) + rand1);
+      }
+      if (basketball != b) {
+        for (let i = 0; i < basketball.length - counter; i++) {
+          rand2 += String.fromCharCode(Math.floor(Math.random() * 65 + 65));
+        }
+        setBasketball(b.slice(0, counter) + rand2);
+      }
+      setCounter(c => c+1);
+    }, 100);
+    if (donkey == d && basketball == b) clearInterval(intervalId);
+    return () => clearInterval(intervalId);
+  })
 
   const { cursorSetter } = useContext(CursorContext);
 
@@ -42,7 +81,7 @@ export default function SideStrip() {
 
   // mouseover bubbles, so this fires as the pointer moves between children
   const handleMouseOver = (e: MouseEvent<HTMLDivElement>) => {
-    cursorSetter(isInteractive(e.target) ? "plus" : toggleCursor(collapsed));
+    cursorSetter(isInteractive(e.target) ?? toggleCursor(collapsed));
   };
 
   const handleClick = (e: MouseEvent<HTMLDivElement>) => {
@@ -67,7 +106,7 @@ export default function SideStrip() {
       
         <div className="side-strip__titles">
           <div className="side-strip__title-row">
-            <div className="side-strip__title2">Donkey</div>
+            <div className="side-strip__title1">{donkey}</div><div className="side-strip__title2"> {basketball}</div>
             <div className="side-strip__glyph side-strip__glyph--sm side-strip__glyph--grow">
               +
             </div>
@@ -75,49 +114,54 @@ export default function SideStrip() {
             <div>+</div>
           </div>
           <div className="side-strip__title-row">
-            <div className="side-strip__title">Basketball</div>
+            <div className="side-strip__spacer-right"></div>
+            <div className="side-strip__spacer-3"></div>
+            <div className="side-strip__spacer"></div>
+          </div>
+          <div className="side-strip__marg-2">
+            <div className="side-strip__nav-links">
+              <Link href="/" className="side-strip__nav-link">
+                Home
+              </Link>
+              <Link href="/music" className="side-strip__nav-link side-strip__nav-link--grow">
+                Music
+              </Link>
+              <Link href="/about" className="side-strip__nav-link">
+                About
+              </Link>
+            </div>
+            <div className="side-strip__spacer-right"/>
           </div>
           <div className="side-strip__glyph side-strip__glyph--sm">+</div>
           <div className="side-strip__glyph side-strip__glyph--xs">+</div>
         </div>
+        
 
       </div>
-        <div className="side-strip__score side-strip__marg">
+        <div className="side-strip__score side-strip__marg-3">
           <div className="side-strip__score-dots">
-            <div>+</div>
-            <div>+</div>
+            <button onClick={() => setCount1(count => count * -1)}>¬</button>
+            <button onClick={() => setCount1(count => count * 2)}>*</button>
+            <button onClick={() => setCount1(count => count / 2)}>/</button>
           </div>
           <div className="side-strip__spacer"/>
-          <div className="side-strip__score-value">0</div>
-          <div className="side-strip__score-plus">+</div>
-          <div className="side-strip__score-dots">
+          <div className="side-strip__score-value">{count1.toString().padStart(3, '0')}</div>
+          <button className="side-strip__score-plus" onClick={() => setCount1(count => count + 1)}>+</button>
+          <button className="side-strip__score-dots" onClick={() => setCount1(count => count - 1)}>
             {`  -   `}
+          </button>
         </div>
-        </div>
-        <div className="side-strip__spacer side-strip__marg"/>
+        <div className="side-strip__spacer-right side-strip__marg-3"/>
+        <div className="side-strip__nav-row side-strip__marg-2">
+          <div className="side-strip__spacer"/>
+
+            <button onClick={() => setCount2(count => count + 1)}>+</button>
+            <div className="side-strip__score-value">{count2}</div>
+          </div>
 
 
       <div className="side-strip__footer">
-        <div className="side-strip__nav-row">
-        <div className="side-strip__spacer"/>
-
-          <div>+</div>
-          <div className="side-strip__index">01</div>
-
-          <div className="side-strip__nav-links">
-            <Link href="/" className="side-strip__nav-link">
-              Home
-            </Link>
-            <Link href="/music" className="side-strip__nav-link side-strip__nav-link--grow">
-              Music
-            </Link>
-            <Link href="/about" className="side-strip__nav-link">
-              About
-            </Link>
-          </div>
-
-        </div>
-
+        
         <form className="side-strip__form">
           <input
             type="text"
