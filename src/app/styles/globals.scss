@@ -122,12 +122,12 @@ $sizes: (
 );
 
 $sizes-collapsed: (
-  xxl: 12px,
-  xl: 12px,
+  xxl: 18px,
+  xl: 20px,
   lg: 12px,
   md: 12px,
   sm: 12px,
-  xs: 12px,
+  xs: 2px,
 );
 
 @function fsize($key) {
@@ -248,7 +248,7 @@ $motion: 0.3s cubic-bezier(0.075, 0.82, 0.165, 1);
   &__title1, &__title2 {
     flex: 1 1 auto;
     display: flex;
-    line-height: 120px;
+    line-height: calc(min(120px, 1.2em));
     align-items: flex-end;
     vertical-align: bottom;
     min-width: 0;
@@ -321,6 +321,13 @@ $motion: 0.3s cubic-bezier(0.075, 0.82, 0.165, 1);
     min-height: 5em;
     max-width: .2em !important;
     width: 0;
+  }
+
+  &__spacer-left {
+    min-height: 5em;
+    max-width: .2em !important;
+    width: 0;
+    align-self: center;
   }
 
   &__marg  {
@@ -412,22 +419,31 @@ $motion: 0.3s cubic-bezier(0.075, 0.82, 0.165, 1);
     background-color: v.$background;
     user-select: none;
     border: 0.5px solid transparent;
-    transition: background-color $motion color $motion;
+    transform: skewX(0deg);
+    transition: 
+      all $motion;
     &:hover {
       animation: flicker 0.1s ease-in-out;
       animation-iteration-count: 1;
       animation-fill-mode: forwards; 
       border-color: v.$copy;
       color: v.$copy;
+
+        transform: skewX(-5deg);
+        z-index: 99 !important;
     }
   }
 
   // ---- collapsed state ------------------------------------------------------
 
   &--collapsed {
-    max-width: 20dvw;
-    min-width: 0;
+    max-height: fit-content;
+    min-height: 0;
 
+
+    .side-strip__spacer-left, .side-strip__spacer-right, .side-strip__nav-row, .side-strip__glyph, .side-strip__score, .side-strip__spacer {
+      display: none;
+    }
 
     .side-strip__corner {
       width: 1.25em;

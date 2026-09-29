@@ -45,33 +45,10 @@ export default function SideStrip() {
   const [count1, setCount1] = useState(0);
   const [count2, setCount2] = useState(0);
 
-  const [donkey, setDonkey] = useState('######');
-  const [basketball, setBasketball] = useState('##########');
+  const [donkey, setDonkey] = useState('donkey');
+  const [basketball, setBasketball] = useState('Basketball');
   const [counter, setCounter] = useState(0);
 
-  useEffect(() => {
-    const d = "Donkey";
-    const b = "Basketball";
-    const intervalId = setInterval(() => {
-      let rand1 = "";
-      let rand2 = "";
-      if (donkey != d) {
-        for (let i = 0; i < donkey.length - counter; i++) {
-          rand1 += String.fromCharCode(Math.floor(Math.random() * 65 + 65));
-        }
-        setDonkey(d.slice(0, counter) + rand1);
-      }
-      if (basketball != b) {
-        for (let i = 0; i < basketball.length - counter; i++) {
-          rand2 += String.fromCharCode(Math.floor(Math.random() * 65 + 65));
-        }
-        setBasketball(b.slice(0, counter) + rand2);
-      }
-      setCounter(c => c+1);
-    }, 100);
-    if (donkey == d && basketball == b) clearInterval(intervalId);
-    return () => clearInterval(intervalId);
-  })
 
   const { cursorSetter } = useContext(CursorContext);
 
@@ -106,7 +83,7 @@ export default function SideStrip() {
       
         <div className="side-strip__titles">
           <div className="side-strip__title-row">
-            <div className="side-strip__title1">{donkey}</div><div className="side-strip__title2"> {basketball}</div>
+            <div className="side-strip__title1">{donkey}</div><div className="side-strip__title2">{basketball}</div>
             <div className="side-strip__glyph side-strip__glyph--sm side-strip__glyph--grow">
               +
             </div>
@@ -115,10 +92,11 @@ export default function SideStrip() {
           </div>
           <div className="side-strip__title-row">
             <div className="side-strip__spacer-right"></div>
-            <div className="side-strip__spacer-3"></div>
+            <div className="side-strip__spacer-left"></div>
             <div className="side-strip__spacer"></div>
           </div>
           <div className="side-strip__marg-2">
+          <div className="side-strip__spacer-left"/>
             <div className="side-strip__nav-links">
               <Link href="/" className="side-strip__nav-link">
                 Home
