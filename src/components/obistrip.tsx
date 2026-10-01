@@ -1,28 +1,7 @@
 "use client";
-
-import ReactLenis from "lenis/react";
 import Link from "next/link";
-import { useEffect, useState, type ReactNode, useContext, MouseEvent } from "react";
+import { useState, useContext, MouseEvent } from "react";
 import { CursorContext } from "./cursorcontext";
-
-
-/**
- * Lays out any number of <SideStrip>s in a row that scrolls horizontally
- * once it overflows, and mounts the shared cursor once for all of them.
- */
-export function SideStripRow({ children }: { children: ReactNode }) {
-  return (
-    <div className="side-strip-row">
-      <ReactLenis root options={{
-          duration: 1.2,
-          lerp: 0.1,     
-          smoothWheel: true 
-      }}>
-        {children}
-      </ReactLenis>
-    </div>
-  );
-}
 
 const INTERACTIVE_SELECTOR = "button, a, input, textarea, select, label, div";
 
@@ -69,7 +48,7 @@ export default function SideStrip() {
 
   return (
     <div
-      className={`side-strip${collapsed ? " side-strip--collapsed" : ""}`}
+      className={`side-strip${collapsed ? " side-strip--collapsed" : ""} side-strip-menu`}
       onMouseOver={handleMouseOver}
       onMouseLeave={() => cursorSetter("plus")}
       onClick={handleClick}

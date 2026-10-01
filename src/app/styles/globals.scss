@@ -98,14 +98,26 @@ input::placeholder {
 // Row of strips — horizontally scrollable
 // ---------------------------------------------------------------------------
 
-.side-strip-row {
+.parent {
+  padding: 1em;
+}
+
+.strip-col {
   display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  max-width: 100vw;
+  gap: 1em;
+}
+
+.strip-row {
+  gap: 1em;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
   align-items: flex-start;
   width: 100%;
   max-width: 100vw;
-  overflow-x: auto;
-  overflow-y: hidden;
-  scroll-snap-type: x proximity;
 }
 
 // ---------------------------------------------------------------------------
@@ -140,19 +152,19 @@ $sizes-collapsed: (
 
 $motion: 0.3s cubic-bezier(0.075, 0.82, 0.165, 1);
 
+.side-strip-menu {
+  width: 100%;
+  max-width: 100%;
+  height: calc(100dvh - 2em);
+  min-width: 18em;
+}
+
 .side-strip {
   position: relative; 
   display: flex;
   flex-flow: column wrap;
-  flex: 0 0 auto; // inside .side-strip-row: keep intrinsic width, don't shrink
-  scroll-snap-align: start;
-
-  height: calc(100dvh - 1em);
-  margin: 0.5em;
-  overflow: hidden;
-  width: calc(100dvw - 1em);
-  max-width: 100dvw;
-  min-width: 18em;
+  flex: 1 0 auto;   
+  
 
   gap: 1px;
 
@@ -439,6 +451,7 @@ $motion: 0.3s cubic-bezier(0.075, 0.82, 0.165, 1);
   &--collapsed {
     max-height: fit-content;
     min-height: 0;
+    flex-grow: 50%;
 
 
     .side-strip__spacer-left, .side-strip__spacer-right, .side-strip__nav-row, .side-strip__glyph, .side-strip__score, .side-strip__spacer {
