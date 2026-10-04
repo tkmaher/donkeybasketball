@@ -39,6 +39,12 @@ export function Cursor() {
         {cursor == 'text' &&
           <svg xmlns="http://www.w3.org/2000/svg"  viewBox="0 -960 960 960" ><path d="M440-120v-80h80v80h-80Zm0-640v-80h80v80h-80Zm160 640v-80h80v80h-80Zm0-640v-80h80v80h-80Zm160 640v-80h80v80h-80Zm0-160v-80h80v80h-80Zm0-160v-80h80v80h-80Zm0-160v-80h80v80h-80Zm0-160v-80h80v80h-80ZM120-120v-80h80v-560h-80v-80h240v80h-80v560h80v80H120Z"/></svg>
         }
+        {cursor == 'play' &&
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" ><path d="M320-200v-560l440 280-440 280Zm80-280Zm0 134 210-134-210-134v268Z"/></svg>
+        }
+        {cursor == 'pause' &&
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" ><path d="M520-200v-560h240v560H520Zm-320 0v-560h240v560H200Zm400-80h80v-400h-80v400Zm-320 0h80v-400h-80v400Zm0-400v400-400Zm320 0v400-400Z"/></svg>
+        }
       </div>
     );
 }

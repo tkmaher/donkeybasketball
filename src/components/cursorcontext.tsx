@@ -1,7 +1,7 @@
 "use client";
 import { createContext, useContext, useState } from 'react';
 
-type CursorType = "plus" | "expand" | "collapse" | "donut" | "text";
+type CursorType = "plus" | "expand" | "collapse" | "donut" | "text" | "play" | "pause";
 
 export const CursorContext = createContext({
     cursor: 'plus',

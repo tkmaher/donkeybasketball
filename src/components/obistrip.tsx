@@ -2,19 +2,7 @@
 import Link from "next/link";
 import { useState, useContext, MouseEvent } from "react";
 import { CursorContext } from "./cursorcontext";
-
-const INTERACTIVE_SELECTOR = "button, a, input, textarea, select, label, div";
-
-const isInteractive = (target: EventTarget) => {
-  if (!(target instanceof Element) || (target.children.length)) return null;
-  const closest = target.closest(INTERACTIVE_SELECTOR) ?? null;
-  if (!closest) return null;
-  if (closest.matches("button") || closest.matches("a"))
-    return "donut";
-  if (closest.matches("input") || closest.matches("textarea"))
-    return "text";
-  return "plus";
-}
+import { isInteractive } from "./cursor_changer";
 
 export default function SideStrip() {
   const [email, setEmail] = useState("");
@@ -23,11 +11,6 @@ export default function SideStrip() {
 
   const [count1, setCount1] = useState(0);
   const [count2, setCount2] = useState(0);
-
-  const [donkey, setDonkey] = useState('donkey');
-  const [basketball, setBasketball] = useState('Basketball');
-  const [counter, setCounter] = useState(0);
-
 
   const { cursorSetter } = useContext(CursorContext);
 
@@ -62,7 +45,7 @@ export default function SideStrip() {
       
         <div className="side-strip__titles">
           <div className="side-strip__title-row">
-            <div className="side-strip__title1">{donkey}</div><div className="side-strip__title2">{basketball}</div>
+            <div className="side-strip__title1">Donkey Basketball</div>
             <div className="side-strip__glyph side-strip__glyph--sm side-strip__glyph--grow">
               +
             </div>
