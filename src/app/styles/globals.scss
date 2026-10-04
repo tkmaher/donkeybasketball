@@ -299,7 +299,6 @@ $motion: 0.3s cubic-bezier(0.075, 0.82, 0.165, 1);
     vertical-align: bottom;
     min-width: 0;
     width: auto;             
-    overflow-wrap: normal;
     word-break: keep-all;
     white-space: normal;
     z-index: 11 !important; 
@@ -414,6 +413,13 @@ $motion: 0.3s cubic-bezier(0.075, 0.82, 0.165, 1);
     padding: 0 1em 1em 1em;
   }
 
+  &__full {
+    display: flex;
+    flex-direction: column;
+
+    padding: 1em;
+  }
+
   &__nav-row {
     display: flex;
     flex-flow: row wrap;
@@ -478,13 +484,13 @@ $motion: 0.3s cubic-bezier(0.075, 0.82, 0.165, 1);
     transform: skewX(0deg);
     transition: 
     all $motion;
-    &:hover {
+    &:hover, &:active, &:focus {
       animation: flicker 0.1s ease-in-out;
       animation-iteration-count: 1;
       animation-fill-mode: forwards; 
       border-color: v.$copy;
       color: v.$copy;
-      transform: skewX(-5deg);
+      //transform: skewX(-5deg);
       z-index: 99 !important;
       path {
         fill: v.$copy !important;
@@ -545,6 +551,10 @@ $motion: 0.3s cubic-bezier(0.075, 0.82, 0.165, 1);
     padding: 1em;
   }
 
+  input[type="range"] {
+    flex-grow: 1;
+  }
+
 }
 
 .audio-info-col {
@@ -562,4 +572,18 @@ svg {
   path {
     pointer-events: none;
   }
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 0;
+  height: 0;
+}
+
+/* Hide the pointer in Firefox */
+input[type="range"]::-moz-range-thumb {
+  width: 0;
+  height: 0;
+  border: 0;
 }

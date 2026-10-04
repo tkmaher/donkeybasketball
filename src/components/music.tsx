@@ -53,6 +53,7 @@ function AudioBlockComponent({ block }: { block: AudioBlock }) {
     return `${paddedMinutes}:${paddedSeconds}`;
   }
 
+
   return (
     <div className="audio-info-col">
       <div className="audio-block">
@@ -104,8 +105,18 @@ function AudioBlockComponent({ block }: { block: AudioBlock }) {
               audioElement.current.currentTime = newTime;
             }
           }} 
+          style={{
+            background: `
+              linear-gradient(
+                to right, 
+                #2d2d2d 0%, 
+                #2d2d2d ${100 * currentTime / audioElement.current.duration}%, 
+                #111111 ${100 * currentTime / audioElement.current.duration}%, #111111 100%
+              )
+            `
+          }}
         />
-        <input 
+        {/* <input 
           type="range" 
           min="0" 
           max="1" 
@@ -118,7 +129,7 @@ function AudioBlockComponent({ block }: { block: AudioBlock }) {
               audioElement.current.volume = newVolume;
             }
           }} 
-        />
+        /> */}
       </div>}
     </div>
   );
@@ -174,16 +185,10 @@ export default function SideStrip() {
         <div className="side-strip__corner side-strip__corner--tr" />
       </div>
 
-      <div className="side-strip__header">
-      
-      
-        {audioBlocks?.map((block) => block && <>
+      <div className="side-strip__full">
+        {audioBlocks?.map((block) => block && 
           <AudioBlockComponent key={block.id} block={block} />
-          <br/>
-          </>)}
-      </div>
-      <div className="side-strip__footer">
-        <a className="side-strip__glyph side-strip__glyph--sm">Go</a>
+        )}
       </div>
         
 
