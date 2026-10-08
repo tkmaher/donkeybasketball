@@ -6,10 +6,7 @@ export default function Page() {
   return (
     <div className="strip-col parent">
         <div className="strip-row">
-          <div className="strip-col">
-            <SideStrip/>
-            <AboutStrip/>
-          </div>
+          <SideStrip/>
           <MusicStrip/>
         </div>
 

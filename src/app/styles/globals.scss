@@ -125,7 +125,6 @@ input::placeholder {
   gap: 1em;
   display: flex;
   flex-direction: row;
-  flex-wrap: wrap;
   align-items: flex-start;
   width: 100%;
   max-width: 100vw;
@@ -142,21 +141,21 @@ input::placeholder {
 // ---------------------------------------------------------------------------
 
 $sizes: (
-  xl: 120px,
-  lg1: 120px,
-  lg: 12px,
-  md: 12px,
-  sm: 16px,
-  xs: 12px,
+  xl: 5em,
+  lg1: 5em,
+  lg: 1em,
+  md: 1em,
+  sm: 1.2em,
+  xs: 1.2em,
 );
 
 $sizes-collapsed: (
-  xl: 20px,
-  lg2: 16px,
-  lg: 12px,
-  md: 12px,
-  sm: 12px,
-  xs: 2px,
+  xl: 1.2em,
+  lg1: 1em,
+  lg: 1em,
+  md: 1em,
+  sm: 1em,
+  xs: 0.2em,
 );
 
 @function fsize($key) {
@@ -196,7 +195,6 @@ $motion: 0.3s cubic-bezier(0.075, 0.82, 0.165, 1);
   position: relative; 
   display: flex;
   flex-flow: column wrap;
-  flex: 1 0 auto;   
   
 
   gap: 1px;
@@ -502,17 +500,46 @@ $motion: 0.3s cubic-bezier(0.075, 0.82, 0.165, 1);
 
   &--collapsed {
     max-height: fit-content;
+    max-width: fit-content;
     min-height: 0;
-    flex-grow: 50%;
-
-
-    .side-strip__spacer-left, .side-strip__spacer-right, .side-strip__nav-row, .side-strip__glyph, .side-strip__score, .side-strip__spacer {
-      display: none;
-    }
 
     .side-strip__corner {
       width: 1.25em;
       height: 1.25em;
+    }
+
+    :not(:has(*)):not(.side-strip__title1):not(.side-strip__corner):not(.side-strip__nav-link) {
+      width: 0 !important;
+      height: 0 !important;
+      min-height: 0 !important;
+      max-height: 0;
+      border: 0px transparent;
+      gap: 0px !important;
+      opacity: 0;
+      pointer-events: none;
+      padding: 0;
+      margin: 0;
+    }
+    .side-strip__marg-2 {
+      margin-left: 1em;
+      flex-direction: column;
+      align-items: flex-start;
+      & > * {
+        width: fit-content;
+      }
+    }
+    .side-strip__header {
+
+      .side-strip__marg-2 {
+        margin-left: 0;
+      }
+    }
+    .side-strip__marg-3 {
+      margin-left: 1em;
+      flex-direction: column;
+    }
+    .side-strip__nav-links {
+      flex-direction: column;
     }
 
     $collapse-targets: (

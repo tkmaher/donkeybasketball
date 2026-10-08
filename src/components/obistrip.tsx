@@ -14,11 +14,9 @@ export default function SideStrip() {
 
   const { cursorSetter } = useContext(CursorContext);
 
-  // Cursor label for a non-interactive hover, given the current state
   const toggleCursor = (isCollapsed: boolean) =>
     isCollapsed ? "expand" : "collapse";
 
-  // mouseover bubbles, so this fires as the pointer moves between children
   const handleMouseOver = (e: MouseEvent<HTMLDivElement>) => {
     cursorSetter(isInteractive(e.target) ?? toggleCursor(collapsed));
   };
@@ -45,12 +43,12 @@ export default function SideStrip() {
       
         <div className="side-strip__titles">
           <div className="side-strip__title-row">
+            <div>+</div>
             <div className="side-strip__title1">Donkey Basketball</div>
             <div className="side-strip__glyph side-strip__glyph--sm side-strip__glyph--grow">
               +
             </div>
-            <div>+</div>
-            <div>+</div>
+            <div style={{flexGrow: 1}}>+</div>
           </div>
           <div className="side-strip__title-row">
             <div className="side-strip__spacer-right"></div>
@@ -60,19 +58,20 @@ export default function SideStrip() {
           <div className="side-strip__marg-2">
           <div className="side-strip__spacer-left"/>
             <div className="side-strip__nav-links">
-              <Link href="/" className="side-strip__nav-link">
-                Home
-              </Link>
-              <Link href="/music" className="side-strip__nav-link side-strip__nav-link--grow">
-                Music
-              </Link>
               <Link href="/about" className="side-strip__nav-link">
                 About
+              </Link>
+              <a href="https://donkeybasketball.bandcamp.com/" target="_blank" className="side-strip__nav-link side-strip__nav-link--grow">
+                Bandcamp
+              </a>
+              <Link href="/shows" className="side-strip__nav-link">
+                Shows
               </Link>
             </div>
             <div className="side-strip__spacer-right"/>
           </div>
           <div className="side-strip__glyph side-strip__glyph--sm">+</div>
+          
           <div className="side-strip__glyph side-strip__glyph--xs">+</div>
         </div>
         
@@ -83,6 +82,7 @@ export default function SideStrip() {
             <button onClick={() => setCount1(count => count * -1)}>¬</button>
             <button onClick={() => setCount1(count => count * 2)}>*</button>
             <button onClick={() => setCount1(count => count / 2)}>/</button>
+            
           </div>
           <div className="side-strip__spacer"/>
           <div className="side-strip__score-value">{count1.toString().padStart(3, '0')}</div>
@@ -90,15 +90,31 @@ export default function SideStrip() {
           <button className="side-strip__score-dots" onClick={() => setCount1(count => count - 1)}>
             {`  -   `}
           </button>
+          <i>
+            <Link href="/sound-objects" className="side-strip__nav-link side-strip__nav-link--grow">
+              Sound Objects
+            </Link>
+          </i>
         </div>
         <div className="side-strip__spacer-right side-strip__marg-3"/>
+
         <div className="side-strip__nav-row side-strip__marg-2">
+          <a href="https://www.instagram.com/donkeybasketbal/" target="_blank" className="side-strip__nav-link">
+            Instagram
+          </a>
           <div className="side-strip__spacer"/>
 
-            <button onClick={() => setCount2(count => count + 1)}>+</button>
-            <div className="side-strip__score-value">{count2}</div>
+          <button onClick={() => setCount2(count => count + 1)}>+</button>
+          <div className="side-strip__score-value">{count2}</div>
+          <div className="side-strip__nav-links">
+            <a href="mailto:izzylowenstein@gmail.com" target="_blank" className="side-strip__nav-link">
+              Contact
+            </a>
+            <Link href="/" className="side-strip__nav-link">
+              Home
+            </Link>
           </div>
-
+        </div>
 
       <div className="side-strip__footer">
         
