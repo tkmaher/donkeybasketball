@@ -35,15 +35,13 @@ export default function SideStrip() {
           <div className="side-strip__title2">About</div>   
 
         </div>     
-        <div className="side-strip__marg-3 side-strip__body-text">
-           elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-        </div>   
-        <div className="side-strip__score side-strip-marg-3">
-          <a className="side-strip__score side-strip-marg">Link1</a>
-          <a className="side-strip__score side-strip-marg">Link2</a>
-        </div>   
-
-      </div>
+        <div className="side-strip__body-text">
+          Donkey Basketball is the Chicago-based hardware performance and recording project of Isaac Tomas Lowenstein. Its second full-length, remold / recur, arrived in 2025 on Spain's EVEL, followed in 2026 by collaborations with Sun Picture and View 3.        </div>   
+          <div className="side-strip__score side-strip-marg-3">
+            <a className="side-strip__score side-strip-marg">Link1</a>
+            <a className="side-strip__score side-strip-marg">Link2</a>
+          </div>   
+        </div>
       <div className="side-strip__footer">
       
       <div className="side-strip__glyph side-strip__glyph--sm">+</div>

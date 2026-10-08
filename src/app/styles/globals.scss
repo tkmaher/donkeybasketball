@@ -145,8 +145,8 @@ $sizes: (
   lg1: 5em,
   lg: 1em,
   md: 1em,
-  sm: 1.2em,
-  xs: 1.2em,
+  sm: 1em,
+  xs: 1em,
 );
 
 $sizes-collapsed: (
@@ -166,22 +166,34 @@ $sizes-collapsed: (
   @return map.get($sizes-collapsed, $key);
 }
 
-$motion: 0.3s cubic-bezier(0.075, 0.82, 0.165, 1);
+$motion: 1s cubic-bezier(0.075, 0.82, 0.165, 1);
 
 .side-strip-menu {
-  width: 100%;
-  max-width: 100%;
+  width: 20%;
   height: calc(100dvh - 2em);
-  min-width: 18em;
+  min-width: 10%;
 
+  &__titles {
+    font-size: fsize(lg);
+  }
+
+  
+}
+
+.side-strip--home {
+  width: 100%; 
+  .side-strip__title1 {
+    font-size: fsize(xl);
+  }   
   .side-strip__corner {
     width: 3em;
     height: 3em;
-  }
+  }                    
 }
 
 .side-strip-about {
   width: 100%;
+  height: calc(100dvh - 2em);
   flex: 1 1 0;          
   min-width: 0;
 }
@@ -196,10 +208,14 @@ $motion: 0.3s cubic-bezier(0.075, 0.82, 0.165, 1);
   display: flex;
   flex-flow: column wrap;
   
-
+  .side-strip__corner {
+    width: 1.25em;
+    height: 1.25em;
+  }
   gap: 1px;
 
   border: 0.5px solid transparent;
+  flex-shrink: 0;
   transition:
     width $motion,
     height $motion,
@@ -305,9 +321,7 @@ $motion: 0.3s cubic-bezier(0.075, 0.82, 0.165, 1);
   }
 
   &__title1 {
-    font-size: fsize(xl);
     flex-grow: 0;
-
   }
 
   &__title2 {
@@ -365,15 +379,13 @@ $motion: 0.3s cubic-bezier(0.075, 0.82, 0.165, 1);
   }
 
   &__spacer, &__spacer-right {
-    flex-grow: 1;
     align-self: stretch; 
     min-height: 0;
-    flex-grow: 1;
   }
-
+  
   &__spacer-right {
-    min-height: 5em;
-    max-width: .2em !important;
+    flex-grow: 1;
+    height: 5em;
     width: 0;
   }
 
@@ -448,17 +460,15 @@ $motion: 0.3s cubic-bezier(0.075, 0.82, 0.165, 1);
 
   &__form {
     display: flex;
-    flex-wrap: wrap;
   }
 
   &__input {
     font-size: fsize(md);
-    flex-grow: 1;
   }
-
+  
   &__submit {
     font-size: fsize(md);
-    width: fit-content;
+    flex-grow: 0;
   }
 
 
@@ -496,73 +506,6 @@ $motion: 0.3s cubic-bezier(0.075, 0.82, 0.165, 1);
     }
   }
 
-  // ---- collapsed state ------------------------------------------------------
-
-  &--collapsed {
-    max-height: fit-content;
-    max-width: fit-content;
-    min-height: 0;
-
-    .side-strip__corner {
-      width: 1.25em;
-      height: 1.25em;
-    }
-
-    :not(:has(*)):not(.side-strip__title1):not(.side-strip__corner):not(.side-strip__nav-link) {
-      width: 0 !important;
-      height: 0 !important;
-      min-height: 0 !important;
-      max-height: 0;
-      border: 0px transparent;
-      gap: 0px !important;
-      opacity: 0;
-      pointer-events: none;
-      padding: 0;
-      margin: 0;
-    }
-    .side-strip__marg-2 {
-      margin-left: 1em;
-      flex-direction: column;
-      align-items: flex-start;
-      & > * {
-        width: fit-content;
-      }
-    }
-    .side-strip__header {
-
-      .side-strip__marg-2 {
-        margin-left: 0;
-      }
-    }
-    .side-strip__marg-3 {
-      margin-left: 1em;
-      flex-direction: column;
-    }
-    .side-strip__nav-links {
-      flex-direction: column;
-    }
-
-    $collapse-targets: (
-      ".side-strip__title1": xl,
-      ".side-strip__title2": lg2,
-      ".side-strip__score-plus": xs,
-      ".side-strip__index": lg,
-      ".side-strip__score-value": xs,
-      ".side-strip__input": sm,
-      ".side-strip__submit": sm,
-      ".side-strip__collapse-toggle": sm,
-      ".side-strip__nav-link": sm,
-      ".side-strip__glyph--sm": xs,
-      ".side-strip__glyph--xs": xs,
-      ".side-strip__score-dots": xs,
-    );
-
-    @each $selector, $key in $collapse-targets {
-      #{$selector} {
-        font-size: fsize-collapsed($key);
-      }
-    }
-  }
 }
 
 // audio

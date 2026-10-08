@@ -1,8 +1,9 @@
 "use client";
 import Link from "next/link";
-import { useState, useContext, MouseEvent } from "react";
+import { useState, useContext, MouseEvent, useEffect } from "react";
 import { CursorContext } from "./cursorcontext";
 import { isInteractive } from "./cursor_changer";
+import { usePathname } from "next/navigation";
 
 export default function SideStrip() {
   const [email, setEmail] = useState("");
@@ -27,9 +28,22 @@ export default function SideStrip() {
     cursorSetter(toggleCursor(!collapsed)); // label for the *new* state
   };
 
+  const pathname = usePathname();
+  const isHome = pathname === "/";
+
+  useEffect(() => {
+    if (isHome) {
+      setCollapsed(false);
+    } else {
+      setCollapsed(true);
+    }
+  }, [pathname]);
+
   return (
     <div
-      className={`side-strip${collapsed ? " side-strip--collapsed" : ""} side-strip-menu`}
+      className={`side-strip${
+        ((isHome && !collapsed) || (!collapsed)) ? " side-strip--home" : ""
+      } side-strip-menu`}
       onMouseOver={handleMouseOver}
       onMouseLeave={() => cursorSetter("plus")}
       onClick={handleClick}
@@ -61,12 +75,15 @@ export default function SideStrip() {
               <Link href="/about" className="side-strip__nav-link">
                 About
               </Link>
-              <a href="https://donkeybasketball.bandcamp.com/" target="_blank" className="side-strip__nav-link side-strip__nav-link--grow">
-                Bandcamp
-              </a>
               <Link href="/shows" className="side-strip__nav-link">
                 Shows
               </Link>
+              <Link href="/files" className="side-strip__nav-link">
+                Files
+              </Link>
+              <a href="https://donkeybasketball.bandcamp.com/" target="_blank" className="side-strip__nav-link side-strip__nav-link--grow">
+                Bandcamp
+              </a>
             </div>
             <div className="side-strip__spacer-right"/>
           </div>
