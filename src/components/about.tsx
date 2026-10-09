@@ -27,25 +27,31 @@ export default function SideStrip() {
         <div className="side-strip__corner side-strip__corner--tl" />
         <div className="side-strip__corner side-strip__corner--tr" />
       </div>
+      <div className="side-strip__parent-body">
+        <div className="side-strip__header" style={{height: '100%'}}>
+        
+          <div className="side-strip__title-row">    
 
-      <div className="side-strip__header">
-      
-        <div className="side-strip__title-row">    
+            <div className="">About</div>   
 
-          <div className="side-strip__title2">About</div>   
-
-        </div>     
-        <div className="side-strip__body-text">
-          Donkey Basketball is the Chicago-based hardware performance and recording project of Isaac Tomas Lowenstein. Its second full-length, remold / recur, arrived in 2025 on Spain's EVEL, followed in 2026 by collaborations with Sun Picture and View 3.        </div>   
-          <div className="side-strip__score side-strip-marg-3">
-            <a className="side-strip__score side-strip-marg">Link1</a>
-            <a className="side-strip__score side-strip-marg">Link2</a>
-          </div>   
-        </div>
-      <div className="side-strip__footer">
-      
-      <div className="side-strip__glyph side-strip__glyph--sm">+</div>
-        <div className="side-strip__glyph side-strip__glyph--xs">+</div>
+          </div>     
+          <div className="side-strip__spacer-right"/>
+            <div className="side-strip__body-text">
+              Donkey Basketball is the Chicago-based hardware performance and recording project of Isaac Tomas Lowenstein. Its second full-length, remold / recur, arrived in 2025 on Spain's EVEL, followed in 2026 by collaborations with Sun Picture and View 3.        
+            </div>   
+            <div className="side-strip__spacer-right"/>
+            <div className="side-strip__score side-strip-marg-3">
+                <a href="https://donkeybasketball.bandcamp.com/" target="_blank" className="side-strip__nav-link">
+                  Bandcamp
+                </a>
+                <a href="https://www.instagram.com/donkeybasketbal/" target="_blank" className="side-strip__nav-link">
+                  Instagram
+                </a>
+            </div>   
+            <div className="side-strip__spacer-right side-strip__marg-3"/>
+            <div className="">{`.`}</div>
+          </div>
+       
       </div>
         
 
