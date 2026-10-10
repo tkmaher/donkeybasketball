@@ -19,7 +19,7 @@ export default function SideStrip() {
 
   return (
     <div
-      className={`side-strip side-strip side-strip-about`}
+      className={`side-strip side-strip-about`}
       onMouseOver={handleMouseOver}
       onMouseLeave={() => cursorSetter("plus")}
     >

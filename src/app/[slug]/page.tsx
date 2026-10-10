@@ -1,20 +1,21 @@
 
-
 import ReactLenis from "lenis/react";
 import AboutStrip from "@/components/about";
+import MusicStrip from "@/components/music";
 
-export default async function Page({ params }: { params: Promise<{ slug: string }> }) {
+export default async function Page({ params }: { params: Promise<{ slug: string }>}) {
     const { slug } = await params;
     console.log("slug", slug);
 
+
   return (
-    <ReactLenis root options={{
-    duration: 1.2,
-        lerp: 0.1,     
-        smoothWheel: true 
-    }}>
-        {slug == "about" && <AboutStrip/>}
-        
-    </ReactLenis>
+
+      <>
+        {slug === "about" && <AboutStrip/>}
+        {slug === "files" && <MusicStrip/>}
+        {!['about', 'files'].includes(slug) && (
+          <div>WIP!</div>
+        )}
+      </>
   )
 }
