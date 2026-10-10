@@ -1,2 +1,0 @@
-- [Rewrite obistrip.tsx, globals.scss, and page.tsx for collapsing strip to 10% width and column links](mem-1.md) — implemented collapsing strip to 10dvw width with links in column
-- [Implement About link to expand AboutStrip from right, compressing SideStrip to 50% width](mem-2.md) — implemented About link click to expand AboutStrip from right, compressing SideStrip to 50% width (including AboutStrip component updates and width fix)
