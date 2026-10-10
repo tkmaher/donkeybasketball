@@ -7,6 +7,7 @@
   src: url('/Space_Mono/SpaceMono-Regular.ttf') format('truetype');
   font-weight: 300;
   font-style: normal;
+  font-display: swap;
 }
 
 @font-face {
@@ -14,6 +15,7 @@
   src: url('/Space_Mono/SpaceMono-Bold.ttf') format('truetype');
   font-weight: 400;
   font-style: bold;
+  font-display: swap;
 }
 
 @font-face {
@@ -21,6 +23,7 @@
   src: url('/Space_Mono/SpaceMono-Italic.ttf') format('truetype');
   font-weight: 300;
   font-style: italic;
+  font-display: swap;
 }
 
 *,
