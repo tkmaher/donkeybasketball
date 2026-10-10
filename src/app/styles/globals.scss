@@ -1,5 +1,6 @@
 @use "sass:map";
 @use "variables" as v;
+@import "computer-modern/index.css";
 
 @font-face {
   font-family: 'Space Mono';
@@ -438,8 +439,30 @@ $motion: 0.3s cubic-bezier(0.075, 0.82, 0.165, 1);
   &__full {
     display: flex;
     flex-direction: column;
-
     padding: 1em;
+  }
+
+  &__so {
+    display: flex;
+    flex-direction: row;
+    padding: 1em;
+    justify-content: space-between;
+  }
+  &__so-title {
+    font-size: 20px;
+  }
+  &__so-block {
+    flex-grow: 1;
+    flex-basis: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-family: "CMU Serif", serif;
+  }
+  &__so-description {
+    font-style: italic;
+    max-width: 75%;
   }
 
   &__scroll {
@@ -541,7 +564,7 @@ $motion: 0.3s cubic-bezier(0.075, 0.82, 0.165, 1);
 
 // Width classes for transitions
 .strip-width-home { width: 100%; }
-.strip-width-about { width: 80%; }
+.strip-width-about { min-width: 70%; }
 
 /* Make ReactLenis container fill the strip */
 .side-strip > .lenis-container {

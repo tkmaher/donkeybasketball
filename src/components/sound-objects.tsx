@@ -23,30 +23,23 @@ export default function SideStrip() {
     >
      
       <div className="side-strip__parent-body">
-        <div className="side-strip__header" style={{height: '100%'}}>
-        
-          <div className="side-strip__title-row">    
-
-            <div className="">About</div>   
-
-          </div>     
-          <div className="side-strip__spacer-right"/>
-            <div className="side-strip__body-text">
-              Donkey Basketball is the Chicago-based hardware performance and recording project of Isaac Tomas Lowenstein. Its second full-length, remold / recur, arrived in 2025 on Spain's EVEL, followed in 2026 by collaborations with Sun Picture and View 3.        
-            </div>   
-            <div className="side-strip__spacer-right"/>
-            <div className="side-strip__score side-strip-marg-3">
-                <a href="https://donkeybasketball.bandcamp.com/" target="_blank" className="side-strip__nav-link">
-                  Bandcamp
-                </a>
-                <a href="https://www.instagram.com/donkeybasketbal/" target="_blank" className="side-strip__nav-link">
-                  Instagram
-                </a>
-            </div>   
-            <div className="side-strip__spacer-right side-strip__marg-3"/>
-            <div className="">{`.`}</div>
+        <div className="side-strip__so" style={{height: '100%'}}>
+          <div className="side-strip__so-block">
+            <div className="side-strip__so-title">
+              (sound <span style={{verticalAlign: "super"}}>objects</span>) = 88.9
+            </div>
+            mondays, 3:30pm
           </div>
-       
+          <div className="side-strip__so-block">
+            <div className="side-strip__so-description">
+              Sound objects are: dubbed and re-dubbed three-times-over, lost in the junk drawer,
+              eternally existent, copied infinitely, buried in the backyard, technologically innovative,
+              technologically obsolete, a replication of the real thing, soulfully misinterpreting, elegantly
+              disenfranchised, surgically damaged, clipping the master bus; comfortably dynamic,
+              structurally unsound, eternally stable, ancient, yet-to-come.
+            </div>
+          </div>
+        </div>
       </div>
         
 
