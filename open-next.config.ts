@@ -1,6 +1,6 @@
-import { defineCloudflareConfig } from "@opennextjs/cloudflare/dist/api/config";
-import kvIncrementalCache from "@opennextjs/cloudflare/dist/api/kv-cache";
+import { defineCloudflareConfig } from "@opennextjs/cloudflare";
 
 export default defineCloudflareConfig({
-  incrementalCache: kvIncrementalCache,
+  // Configure additional overrides like incrementalCache or R2 usage here if needed
+  // For standard deployments without Incremental Static Regeneration (ISR), the defaults suffice
 });
