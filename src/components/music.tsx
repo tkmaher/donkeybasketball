@@ -251,7 +251,14 @@ export default function SideStrip() {
       className="side-strip side-strip-music"
       onMouseOver={handleMouseOver}
       onMouseLeave={() => cursorSetter("plus")}
-      style={{ flexGrow: 1, display: "flex", flexDirection: "column", minHeight: 0, overflow: "hidden" }}
+      style={{ 
+        flexGrow: 1, 
+        display: "flex", 
+        flexDirection: "column", 
+        minHeight: 0, 
+        overflow: "hidden",
+        opacity: audioBlocks ? 1 : 0, transition: "opacity 0.5s" 
+      }}
     >
       <div className="side-strip__corners side-strip__corners--top">
         <div className="side-strip__corner side-strip__corner--tl" />

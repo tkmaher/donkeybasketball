@@ -202,15 +202,21 @@ $motion: 0.3s cubic-bezier(0.075, 0.82, 0.165, 1);
   min-width: 18em;
 }
 
+.side-strip-show {
+  flex: 1 1 0;
+  min-width: 18em;
+  min-height: 18em;
+}
+
 .side-strip {
 
   display: flex;
   gap: 1em;
   flex-direction: column;
 
-  .side-strip__corner {
-    width: 1.25em;
-    height: 1.25em;
+  &:hover &__corner {
+    width: 1.75em;
+    height: 1.75em;
   }
 
   transition:
@@ -509,7 +515,6 @@ $motion: 0.3s cubic-bezier(0.075, 0.82, 0.165, 1);
     all $motion;
     &:hover, &:active, &:focus {
       animation: flicker 0.1s ease-in-out;
-      animation-iteration-count: 1;
       animation-fill-mode: forwards;
       border-color: v.$copy;
       color: v.$copy;
@@ -568,7 +573,7 @@ $motion: 0.3s cubic-bezier(0.075, 0.82, 0.165, 1);
 .play-button {
   height: 80px;
   width: 80px;
-  padding: 1em;
+  padding: 2em !important;
 }
 
 .audio-info-col {
@@ -607,4 +612,146 @@ input[type="range"]::-moz-range-thumb {
 .home-content {
   padding: 2em;
   text-align: center;
+}
+
+$flip: 0.6s cubic-bezier(0.075, 0.82, 0.165, 1);
+
+// ---------------------------------------------------------------------------
+// Mosaic grid — columns are flex children; cards are placed in JS so the
+// number of columns is explicit and constant per width band.
+// ---------------------------------------------------------------------------
+
+.show-grid {
+  --gap: 1em;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--gap);
+  width: 100%;
+
+  &__col {
+    flex: 1 1 0;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap);
+  }
+}
+
+.show-card {
+  position: relative;
+  width: 100%;
+  perspective: 1200px;
+  cursor: none;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+  padding: 1em;
+
+  &__inner {
+    position: absolute;
+    inset: 0;
+    transform-style: preserve-3d;
+    transition: transform $flip;
+  }
+
+  &--flipped &__inner {
+    transform: rotateY(180deg);
+  }
+
+  &__face {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    border: 0.5px solid transparent;
+    transition: border-color 0.2s ease;
+
+    img {
+      padding: 1em !important;
+      background-color: transparent !important;
+    }
+
+    &--back {
+      transform: rotateY(180deg);
+      display: flex;
+      flex-direction: column;
+      padding: 1.5em 1.25em;
+      & > * {
+        text-align: left;
+      }
+    }
+  }
+
+
+  &__title, &__desc {
+    white-space: pre-wrap;
+    word-break: break-all;
+  }
+
+  &__title {
+    flex: 0 0 auto;
+    font-style: italic;
+    line-height: 1.1em;
+  }
+
+  &__desc {
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    line-height: 1.2em;
+    white-space: pre-wrap;
+    color: v.$copy2;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+
+  &__corner {
+    position: absolute;
+    width: 1em;
+    height: 1em;
+    pointer-events: none;
+    transition: width $motion, height $motion;
+    background-color: transparent !important;
+
+    &--tl { top: 0;    left: 0;  border-top: 0.5px solid white;    border-left: 0.5px solid white; }
+    &--tr { top: 0;    right: 0; border-top: 0.5px solid white;    border-right: 0.5px solid white; }
+    &--bl { bottom: 0; left: 0;  border-bottom: 0.5px solid white; border-left: 0.5px solid white; }
+    &--br { bottom: 0; right: 0; border-bottom: 0.5px solid white; border-right: 0.5px solid white; }
+  }
+
+  &:hover &__corner {
+    width: 1.75em;
+    height: 1.75em;
+  }
+}
+
+.image-display {
+  border: none !important;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  background-color: v.$background;
+  transition: all $motion;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  img {
+    max-width: 100%;
+    max-height: 100%;
+    opacity: 0;
+    object-fit: contain;
+    padding: 0 !important;
+    transition: all $motion;
+    border: none !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .show-card__inner {
+    transition-duration: 0.01ms;
+  }
 }

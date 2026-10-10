@@ -1,11 +1,13 @@
 
-import ReactLenis from "lenis/react";
 import AboutStrip from "@/components/about";
 import MusicStrip from "@/components/music";
+import ShowStrip from "@/components/shows";
+import SoundObjects from "@/components/sound-objects";
+
 
 export default async function Page({ params }: { params: Promise<{ slug: string }>}) {
-    const { slug } = await params;
-    console.log("slug", slug);
+  const { slug } = await params;
+  console.log("slug", slug);
 
 
   return (
@@ -13,7 +15,10 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
       <>
         {slug === "about" && <AboutStrip/>}
         {slug === "files" && <MusicStrip/>}
-        {!['about', 'files'].includes(slug) && (
+        {slug === "shows" && <ShowStrip/>}
+        {slug === "sound-objects" && <SoundObjects/>}
+
+        {!['about', 'files', 'shows', "sound-objects"].includes(slug) && (
           <div>WIP!</div>
         )}
       </>

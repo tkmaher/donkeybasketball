@@ -73,13 +73,13 @@ export default function SideStrip() {
             <div className="side-strip__marg-2">
             <div className="side-strip__spacer-left"/>
               <div className="side-strip__nav-links">
-                <Link href="/about" className="side-strip__nav-link">
+                <Link href="/about" className={`side-strip__nav-link ${pathname === "/about" ? "selected" : ""}`}>
                   About
                 </Link>
-                <Link href="/shows" className="side-strip__nav-link">
+                <Link href="/shows" className={`side-strip__nav-link ${pathname === "/shows" ? "selected" : ""}`}>
                   Shows
                 </Link>
-                <Link href="/files" className="side-strip__nav-link">
+                <Link href="/files" className={`side-strip__nav-link ${pathname === "/files" ? "selected" : ""}`}>
                   Files
                 </Link>
                 <a href="https://donkeybasketball.bandcamp.com/" target="_blank" className="side-strip__nav-link side-strip__nav-link--grow">
@@ -128,7 +128,7 @@ export default function SideStrip() {
               <a href="mailto:izzylowenstein@gmail.com" target="_blank" className="side-strip__nav-link">
                 Contact
               </a>
-              <Link href="/" className="side-strip__nav-link">
+              <Link href="/" className={`side-strip__nav-link ${pathname === "/" ? "selected" : ""}`}>
                 Home
               </Link>
             </div>
