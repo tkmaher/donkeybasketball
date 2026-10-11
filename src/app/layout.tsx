@@ -3,6 +3,9 @@ import localFont from "next/font/local";
 import "computer-modern/index.css";
 import "@/app/styles/globals.scss";
 import Main from "@/components/main";
+import { staticMetadata } from "./metadata";
+
+export const metadata: Metadata = staticMetadata;
 
 const spaceMono = localFont({
   src: [
