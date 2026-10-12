@@ -544,7 +544,7 @@ $motion: 0.3s cubic-bezier(0.075, 0.82, 0.165, 1);
 
 // Width classes for transitions
 .strip-width-home { width: 100%; }
-.strip-width-about { min-width: 70%; }
+.strip-width-about { min-width: calc(70% - 1em); }
 
 /* Make ReactLenis container fill the strip */
 .side-strip > .lenis-container {
