@@ -313,7 +313,7 @@ $motion: 0.3s cubic-bezier(0.075, 0.82, 0.165, 1);
     white-space: normal;
     z-index: 11 !important;
     font-weight: 300;
-    font-style: italic;
+    //font-style: italic;
   }
 
   &__title1 {
@@ -693,7 +693,7 @@ $flip: 0.6s cubic-bezier(0.075, 0.82, 0.165, 1);
 
   &__title {
     flex: 0 0 auto;
-    font-style: italic;
+    //font-style: italic;
     line-height: 1.1em;
   }
 
