@@ -240,7 +240,7 @@ export default function Shows() {
               ratio: w && h ? w / h : undefined,
             };
           });
-
+        console.log("fetched blocks:", blocks);
         setShowBlocks(blocks);
       } catch (error) {
         console.error("Error fetching show blocks:", error);
@@ -262,6 +262,7 @@ export default function Shows() {
     }
     up.sort((a, b) => a.date!.localeCompare(b.date!));
     pa.sort((a, b) => (b.date ?? "").localeCompare(a.date ?? ""));
+    console.log("upcoming:", up, "past:", pa);
     return { upcoming: up, past: pa };
   }, [showBlocks]);
 
