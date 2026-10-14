@@ -1,16 +1,35 @@
 "use client";
 
-import { useContext, MouseEvent, useState, useEffect, useRef } from "react";
+import { useContext, MouseEvent, KeyboardEvent, useState, useEffect, useRef } from "react";
 import { CursorContext } from "./cursorcontext";
 import { isInteractive } from "./cursor_changer";
 import ReactLenis from "lenis/react";
 
 interface AudioBlock {
+  kind: "audio";
   id: string;
   title: string;
   description: string;
   audioUrl: string;
 }
+
+interface ChannelBlock {
+  kind: "channel";
+  id: string;
+  title: string;
+  slug: string;
+  count: number;
+}
+
+type ContentItem = AudioBlock | ChannelBlock;
+
+interface PathEntry {
+  slug: string;
+  title: string;
+}
+
+const ROOT_SLUG = "db-cms";
+const channelUrl = (slug: string) => `https://api.are.na/v3/channels/${slug}/contents`;
 
 function formatTime(totalSeconds: number): string {
   if (!isFinite(totalSeconds)) totalSeconds = 0;
@@ -156,10 +175,36 @@ function AudioBlockComponent({
   );
 }
 
-const ARENA_URL = "https://api.are.na/v3/channels/db-cms/contents";
+/** A folder row: same layout as an audio row, minus the play button and description. */
+function ChannelRow({ label, onOpen }: { label: string; onOpen: () => void }) {
+  const onKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      onOpen();
+    }
+  };
+
+  return (
+    <div className="audio-info-col">
+      <div
+        className="audio-block channel-row"
+        role="button"
+        tabIndex={0}
+        onClick={onOpen}
+        onKeyDown={onKeyDown}
+      >
+        <div className="audio-info-col">
+          <div>{label}</div>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 export default function SideStrip() {
-  const [audioBlocks, setAudioBlocks] = useState<AudioBlock[] | null>(null);
+  const [items, setItems] = useState<ContentItem[] | null>(null);
+  // Navigation stack, root first. The last entry is the channel being shown.
+  const [path, setPath] = useState<PathEntry[]>([{ slug: ROOT_SLUG, title: "" }]);
   const [currentBlock, setCurrentBlock] = useState<AudioBlock | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
@@ -170,35 +215,59 @@ export default function SideStrip() {
 
   const { cursorSetter } = useContext(CursorContext);
 
+  const currentSlug = path[path.length - 1].slug;
+
   useEffect(() => {
-    const fetchAudioBlocks = async () => {
+    let cancelled = false;
+    setItems(null);
+
+    const fetchItems = async () => {
       try {
-        const response = await fetch(ARENA_URL);
-        if (!response.ok) throw new Error("Failed to fetch audio blocks");
+        const response = await fetch(channelUrl(currentSlug));
+        if (!response.ok) throw new Error("Failed to fetch channel contents");
         const data = await response.json();
 
-        const blocks: AudioBlock[] = data.data
-          .filter(
-            (block: any) =>
-              block.type === "Attachment" &&
-              block.attachment?.content_type?.startsWith("audio/") &&
-              block.attachment?.url
-          )
-          .map((block: any) => ({
-            id: block.id,
-            title: block.title ?? block.attachment.url,
-            description: block.description?.markdown ?? "",
-            audioUrl: block.attachment.url,
-          }));
+        const blocks: ContentItem[] = [];
+        for (const block of data.data) {
+          if (
+            block.type === "Attachment" &&
+            block.attachment?.content_type?.startsWith("audio/") &&
+            block.attachment?.url
+          ) {
+            blocks.push({
+              kind: "audio",
+              id: String(block.id),
+              title: block.title ?? block.attachment.url,
+              description: block.description?.markdown ?? "",
+              audioUrl: block.attachment.url,
+            });
+          } else if (block.type === "Channel" && block.slug) {
+            blocks.push({
+              kind: "channel",
+              id: String(block.id),
+              title: block.title ?? block.slug,
+              slug: block.slug,
+              count: block.counts?.contents ?? block.length ?? 0,
+            });
+          }
+        }
 
-        setAudioBlocks(blocks);
+        if (!cancelled) setItems(blocks);
       } catch (error) {
-        console.error("Error fetching audio blocks:", error);
+        console.error("Error fetching channel contents:", error);
       }
     };
 
-    fetchAudioBlocks();
-  }, []);
+    fetchItems();
+    return () => {
+      cancelled = true;
+    };
+  }, [currentSlug]);
+
+  const openChannel = (channel: ChannelBlock) =>
+    setPath((p) => [...p, { slug: channel.slug, title: channel.title }]);
+
+  const goUp = () => setPath((p) => (p.length > 1 ? p.slice(0, -1) : p));
 
   /** Play a given block, or toggle play/pause if it's already the current one. */
   const toggleBlock = (block: AudioBlock) => {
@@ -257,7 +326,7 @@ export default function SideStrip() {
         flexDirection: "column", 
         minHeight: 0, 
         overflow: "hidden",
-        opacity: audioBlocks ? 1 : 0, transition: "opacity 0.5s" 
+        opacity: items ? 1 : 0, transition: "opacity 0.5s" 
       }}
     >
       <div className="side-strip__corners side-strip__corners--top">
@@ -274,15 +343,24 @@ export default function SideStrip() {
         }}
       >
         <div className="side-strip__full">
-          {audioBlocks?.map((block) => (
-            <AudioBlockComponent
-              key={block.id}
-              block={block}
-              isCurrent={currentBlock?.id === block.id}
-              isPlaying={isPlaying}
-              onToggle={() => toggleBlock(block)}
-            />
-          ))}
+          {path.length > 1 && <ChannelRow label="../" onOpen={goUp} />}
+          {items?.map((item) =>
+            item.kind === "channel" ? (
+              <ChannelRow
+                key={item.id}
+                label={`${item.title} (${item.count})`}
+                onOpen={() => openChannel(item)}
+              />
+            ) : (
+              <AudioBlockComponent
+                key={item.id}
+                block={item}
+                isCurrent={currentBlock?.id === item.id}
+                isPlaying={isPlaying}
+                onToggle={() => toggleBlock(item)}
+              />
+            )
+          )}
         </div>
       </ReactLenis>
 
