@@ -2,7 +2,7 @@
 
 import ReactLenis from "lenis/react";
 import Link from "next/link";
-import { useContext, MouseEvent, useState } from "react";
+import { useContext, MouseEvent, useState, useEffect } from "react";
 import { CursorContext } from "./cursorcontext";
 import { isInteractive } from "./cursor_changer";
 import Image from "next/image";
@@ -11,6 +11,19 @@ export default function SideStrip() {
   const { cursorSetter } = useContext(CursorContext);
   const [loaded1, setLoaded1] = useState(false);
   const [loaded2, setLoaded2] = useState(false);
+
+  // in the Sound Objects page component
+
+  useEffect(() => {
+    // wait a frame so the browser paints the old state first
+    const id = requestAnimationFrame(() => {
+      document.documentElement.classList.add("theme-light");
+    });
+    return () => {
+      cancelAnimationFrame(id);
+      document.documentElement.classList.remove("theme-light");
+    };
+  }, []);
 
 
   // mouseover bubbles, so this fires as the pointer moves between children

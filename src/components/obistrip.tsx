@@ -39,6 +39,20 @@ export default function SideStrip() {
     }
   }, [pathname]);
 
+  const [status, setStatus] = useState<"idle" | "sending" | "done" | "error">("idle");
+
+  const handleSubmit = async (e: any) => {
+    e.preventDefault();
+    setStatus("sending");
+    const res = await fetch("/api/subscribe", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name, email }),
+    });
+    setStatus(res.ok ? "done" : "error");
+    if (res.ok) { setName(""); setEmail(""); }
+  };
+
   return (
     <div
       className={`side-strip${
@@ -136,7 +150,7 @@ export default function SideStrip() {
 
         <div className="side-strip__footer">
           
-          <form className="side-strip__form">
+          <form className="side-strip__form" onSubmit={handleSubmit}>
             <input
               type="text"
               placeholder="name"
