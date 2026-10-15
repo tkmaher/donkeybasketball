@@ -136,6 +136,7 @@ function ShowCard({
 
         <div className="show-card__face show-card__face--back" aria-hidden={!flipped}>
           <button className="show-card__title">{block.title}</button>
+          <button className="show-card__desc">{block.description}</button>
           <div
             className="inspector"
             data-lenis-prevent
@@ -278,17 +279,31 @@ export default function Shows() {
           lerp: 0.9,
         }}
       >
-        {upcoming.length > 0 && (
-          <section className="show-section">
-            <ShowGrid blocks={upcoming} onSelect={select} />
-          </section>
-        )}
-        <hr/>
-        {past.length > 0 && (
-          <section className="show-section">
-            <ShowGrid blocks={past} onSelect={select} />
-          </section>
-        )}
+        <div>
+          {upcoming.length > 0 && (
+            <section className="show-section">
+              <div className="show-card show-card__section-title">
+                <Corners />
+                <div>
+                  Upcoming
+                </div>
+              </div>
+              <ShowGrid blocks={upcoming} onSelect={select} />
+            </section>
+          )}
+          <br/>
+          {past.length > 0 && (
+            <section className="show-section">
+              <div className="show-card show-card__section-title" >
+                <Corners />
+                <div>
+                  Past
+                </div>
+              </div>
+              <ShowGrid blocks={past} onSelect={select} />
+            </section>
+          )}
+        </div>
       </ReactLenis>
       <div
         className="image-display"

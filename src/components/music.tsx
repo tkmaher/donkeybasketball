@@ -194,7 +194,7 @@ function ChannelRow({ label, onOpen }: { label: string; onOpen: () => void }) {
         onKeyDown={onKeyDown}
       >
         <div className="audio-info-col">
-          <div>{label}</div>
+          <button>{label}</button>
         </div>
       </div>
     </div>
