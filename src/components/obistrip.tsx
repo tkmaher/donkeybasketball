@@ -50,7 +50,14 @@ export default function SideStrip() {
       body: JSON.stringify({ name, email }),
     });
     setStatus(res.ok ? "done" : "error");
-    if (res.ok) { setName(""); setEmail(""); }
+    if (res.ok) { 
+      setName(""); 
+      setEmail(""); 
+      alert("Thank you for subscribing!");
+    } else {
+      const data = await res.json();
+      alert(`Error: ${data.error}`);
+    }
   };
 
   return (
