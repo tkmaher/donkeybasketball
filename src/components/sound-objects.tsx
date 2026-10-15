@@ -2,12 +2,15 @@
 
 import ReactLenis from "lenis/react";
 import Link from "next/link";
-import { useContext, MouseEvent } from "react";
+import { useContext, MouseEvent, useState } from "react";
 import { CursorContext } from "./cursorcontext";
 import { isInteractive } from "./cursor_changer";
+import Image from "next/image";
 
 export default function SideStrip() {
   const { cursorSetter } = useContext(CursorContext);
+  const [loaded1, setLoaded1] = useState(false);
+  const [loaded2, setLoaded2] = useState(false);
 
 
   // mouseover bubbles, so this fires as the pointer moves between children
@@ -24,21 +27,22 @@ export default function SideStrip() {
      
       <div className="side-strip__parent-body">
         <div className="side-strip__so" style={{height: '100%'}}>
-          <div className="side-strip__so-block">
-            <div className="side-strip__so-title">
-              (sound <span style={{verticalAlign: "super"}}>objects</span>) = 88.9
-            </div>
-            mondays, 3:30pm
-          </div>
-          <div className="side-strip__so-block">
-            <div className="side-strip__so-description">
-              Sound objects are: dubbed and re-dubbed three-times-over, lost in the junk drawer,
-              eternally existent, copied infinitely, buried in the backyard, technologically innovative,
-              technologically obsolete, a replication of the real thing, soulfully misinterpreting, elegantly
-              disenfranchised, surgically damaged, clipping the master bus; comfortably dynamic,
-              structurally unsound, eternally stable, ancient, yet-to-come.
-            </div>
-          </div>
+          <Image 
+            src="/sound-objects/1.png" 
+            alt="Sound Objects" 
+            width={600} 
+            height={1000} 
+            style={{opacity: loaded1 ? 1 : 0}}
+            onLoad={() => setLoaded1(true)}
+          />
+          <Image 
+            src="/sound-objects/2.png" 
+            alt="Sound Objects" 
+            width={600} 
+            height={1000} 
+            style={{opacity: loaded2 ? 1 : 0}}
+            onLoad={() => setLoaded2(true)}
+          />        
         </div>
       </div>
         

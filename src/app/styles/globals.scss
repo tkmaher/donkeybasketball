@@ -1,13 +1,13 @@
 @use "sass:map";
 @use "variables" as v;
-@import "computer-modern/index.css";
-
 
 *,
 *::before,
 *::after {
   box-sizing: border-box;
 }
+
+$motion: 0.3s cubic-bezier(0.075, 0.82, 0.165, 1);
 
 html {
   height: 100%;
@@ -20,6 +20,19 @@ body {
   max-width: 100vw;
   overflow: hidden;
   background-color: v.$background;
+  :has(.side-strip__so) {
+    background-color: white;
+    :not(:has(*)) {
+      background-color: white !important;
+      color: black;
+      transition: background-color $motion, color $motion;
+    }
+    .side-strip-menu {
+      min-width: 10%;
+    }
+  }  
+  
+  transition: background-color $motion, color $motion;
   padding: 0;
   margin: 0;
 }
@@ -147,7 +160,6 @@ $sizes-collapsed: (
   @return map.get($sizes-collapsed, $key);
 }
 
-$motion: 0.3s cubic-bezier(0.075, 0.82, 0.165, 1);
 
 .side-strip-menu {
   height: calc(100dvh - 2em);
@@ -427,22 +439,15 @@ $motion: 0.3s cubic-bezier(0.075, 0.82, 0.165, 1);
     flex-direction: row;
     padding: 1em;
     justify-content: space-between;
-  }
-  &__so-title {
-    font-size: 20px;
-  }
-  &__so-block {
-    flex-grow: 1;
-    flex-basis: 50%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    font-family: "CMU Serif", serif;
-  }
-  &__so-description {
-    font-style: italic;
-    max-width: 75%;
+    max-width: 100%;
+    img {
+      transform: all $motion;
+      object-fit: contain;
+      height: 100%;
+      width: auto;
+      padding: 0;
+      border: 0;
+    }
   }
 
   &__scroll {
@@ -708,7 +713,6 @@ $flip: 0.6s cubic-bezier(0.075, 0.82, 0.165, 1);
 
   &__section-title {
     width: fit-content;
-    height: fit-content;
   }
 
   &__title {
