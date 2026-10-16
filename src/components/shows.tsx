@@ -290,8 +290,9 @@ export default function Shows() {
               </div>
               <ShowGrid blocks={upcoming} onSelect={select} />
             </section>
+            
           )}
-          <br/>
+          {past.length > 0 && upcoming.length > 0 && <br/>}
           {past.length > 0 && (
             <section className="show-section">
               <div className="show-card show-card__section-title" >

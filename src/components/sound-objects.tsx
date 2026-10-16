@@ -1,66 +1,66 @@
 "use client";
 
-import ReactLenis from "lenis/react";
-import Link from "next/link";
-import { useContext, MouseEvent, useState, useEffect } from "react";
+import { useContext, MouseEvent, useState, useEffect, useRef } from "react";
 import { CursorContext } from "./cursorcontext";
 import { isInteractive } from "./cursor_changer";
 import Image from "next/image";
 
-export default function SideStrip() {
-  const { cursorSetter } = useContext(CursorContext);
-  const [loaded1, setLoaded1] = useState(false);
-  const [loaded2, setLoaded2] = useState(false);
+function FadeImage({ src, alt, onReady }: { src: string; alt: string; onReady: () => void }) {
+  const ref = useRef<HTMLImageElement>(null);
 
-  // in the Sound Objects page component
-
+  // covers cached / pre-hydration loads where onLoad never fires
   useEffect(() => {
-    // wait a frame so the browser paints the old state first
-    const id = requestAnimationFrame(() => {
-      document.documentElement.classList.add("theme-light");
-    });
-    return () => {
-      cancelAnimationFrame(id);
-      document.documentElement.classList.remove("theme-light");
-    };
+    const img = ref.current;
+    if (img?.complete && img.naturalWidth > 0) onReady();
   }, []);
 
+  return (
+    <Image
+      ref={ref}
+      src={src}
+      alt={alt}
+      width={600}
+      height={1000}
+      priority
+      onLoad={onReady}
+      onError={onReady}   // don't leave the page blank if one fails
+      style={{ aspectRatio: "600 / 1000" }}
+    />
+  );
+}
 
-  // mouseover bubbles, so this fires as the pointer moves between children
+export default function SoundObjectsPage() {
+  const { cursorSetter } = useContext(CursorContext);
+  const [loadedCount, setLoadedCount] = useState(0);
+  const ready = loadedCount >= 2;
+
   const handleMouseOver = (e: MouseEvent<HTMLDivElement>) => {
-    cursorSetter(isInteractive(e.target) ?? 'plus');
+    cursorSetter(isInteractive(e.target) ?? "plus");
   };
+
+  const bump = () => setLoadedCount((c) => c + 1);
 
   return (
     <div
-      className={`side-strip side-strip-about`}
+      className="side-strip side-strip-about"
       onMouseOver={handleMouseOver}
       onMouseLeave={() => cursorSetter("plus")}
     >
-     
       <div className="side-strip__parent-body">
-        <div className="side-strip__so" style={{height: '100%'}}>
-          <Image 
-            src="/sound-objects/1.png" 
-            alt="Sound Objects" 
-            width={600} 
-            height={1000} 
-            style={{opacity: loaded1 ? 1 : 0}}
-            onLoad={() => setLoaded1(true)}
-          />
-          <Image 
-            src="/sound-objects/2.png" 
-            alt="Sound Objects" 
-            width={600} 
-            height={1000} 
-            style={{opacity: loaded2 ? 1 : 0}}
-            onLoad={() => setLoaded2(true)}
-          />        
+        <div
+          className="side-strip__so"
+          style={{ height: "100%" }}
+          // toggles .is-loaded on the child images
+          ref={(el) => {
+            el?.querySelectorAll("img").forEach((img) =>
+              img.classList.toggle("is-loaded", ready)
+            );
+          }}
+        >
+          <FadeImage src="/sound-objects/1.png" alt="Sound Objects" onReady={bump} />
+          <FadeImage src="/sound-objects/2.png" alt="Sound Objects" onReady={bump} />
         </div>
       </div>
-        
-
-
     </div>
   );
 }

@@ -60,6 +60,19 @@ export default function SideStrip() {
     }
   };
 
+  useEffect(() => {
+    const root = document.documentElement;
+    const light = pathname === "/sound-objects";
+  
+    if (!light) {
+      root.classList.remove("theme-light");
+      return;
+    }
+    // wait a frame so the browser paints the old state first (keeps the fade)
+    const id = requestAnimationFrame(() => root.classList.add("theme-light"));
+    return () => cancelAnimationFrame(id);
+  }, [pathname]);
+
   return (
     <div
       className={`side-strip${
@@ -130,7 +143,7 @@ export default function SideStrip() {
               {`  -   `}
             </button>
             <i>
-              <Link href="/sound-objects" className="side-strip__nav-link side-strip__nav-link--grow">
+            <Link href="/sound-objects" className={`side-strip__nav-link side-strip__nav-link--grow ${pathname === "/sound-objects" ? "selected" : ""}`}>
                 Sound Objects
               </Link>
             </i>

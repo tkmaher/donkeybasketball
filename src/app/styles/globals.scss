@@ -437,14 +437,17 @@ $sizes-collapsed: (
     padding: 1em;
     justify-content: space-between;
     max-width: 100%;
+  
     img {
-      transform: all $motion;
       object-fit: contain;
       height: 100%;
       width: auto;
       padding: 0;
-      border: 0;
+      border: 0 !important;
+      background-color: transparent !important;
       opacity: 0;
+      transition: opacity 0.6s ease;   // beats the leaf `transition: all`
+      &.is-loaded { opacity: 1; }
     }
   }
 
@@ -504,10 +507,22 @@ $sizes-collapsed: (
 
 
   @keyframes flicker {
-    0% { background-color: v.$background2; }
-    50% { background-color: v.$background; }
-    99% { background-color: v.$background; }
-    100% { background-color: v.$background2; }
+    0% { 
+      border: 0.5px solid v.$copy; 
+      color: v.$copy;
+    }
+    50% {  
+      border: 0.5px solid v.$copy2; 
+      color: v.$copy2;
+    }
+    99% {  
+      border: 0.5px solid v.$copy2;
+      color: v.$copy2;
+    }
+    100% {  
+      border: 0.5px solid v.$copy; 
+      color: v.$copy;
+    }
   }
 
   :not(:has(*)), svg {
@@ -710,7 +725,9 @@ $flip: 0.6s cubic-bezier(0.075, 0.82, 0.165, 1);
   }
 
   &__section-title {
+    min-width: 10em;
     width: fit-content;
+    height: fit-content;
   }
 
   &__title {
