@@ -561,6 +561,10 @@ $sizes-collapsed: (
     }
   }
 
+  :not(:has(*)) {
+    
+  }
+
 }
 
 .selected {

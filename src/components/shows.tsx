@@ -13,6 +13,7 @@ import { CursorContext } from "./cursorcontext";
 import { isInteractive } from "./cursor_changer";
 import ReactLenis from "lenis/react";
 import Image from "next/image";
+import { useIsMobile } from "./isMobile";
 
 interface ShowBlock {
   id: string;
@@ -271,11 +272,12 @@ export default function Shows() {
 
   const select = useCallback((url: string) => setSelectedImg(url), []);
 
-  const isMobile = useMemo(() => window.innerWidth < 768, []);
+  const isMobile = useIsMobile();
 
-  function InnerContent() {
-    return (
-      <div>
+  return (
+    <>
+      {isMobile ? 
+        <div>
           {upcoming.length > 0 && (
             <section className="show-section">
               <div className="show-card show-card__section-title">
@@ -300,14 +302,7 @@ export default function Shows() {
               <ShowGrid blocks={past} onSelect={select} />
             </section>
           )}
-        </div>
-    )
-  }
-
-  return (
-    <>
-      {isMobile ? 
-        <InnerContent/> :
+        </div> :
         <ReactLenis
           className="side-strip__scroll"
           options={{
@@ -319,7 +314,32 @@ export default function Shows() {
             opacity: showBlocks ? 1 : 0,
           }}
         >
-        <InnerContent/> 
+          <div>
+            {upcoming.length > 0 && (
+              <section className="show-section">
+                <div className="show-card show-card__section-title">
+                  <Corners />
+                  <div>
+                    Upcoming
+                  </div>
+                </div>
+                <ShowGrid blocks={upcoming} onSelect={select} />
+              </section>
+              
+            )}
+            {past.length > 0 && upcoming.length > 0 && <br/>}
+            {past.length > 0 && (
+              <section className="show-section">
+                <div className="show-card show-card__section-title" >
+                  <Corners />
+                  <div>
+                    Past
+                  </div>
+                </div>
+                <ShowGrid blocks={past} onSelect={select} />
+              </section>
+            )}
+          </div>
         </ReactLenis>
       }
       <div
