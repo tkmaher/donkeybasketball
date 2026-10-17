@@ -272,8 +272,8 @@ $sizes-collapsed: (
   }
 
   &__corner {
-    width: 1.25em;
-    height: 1.25em;
+    width: 1.75em;
+    height: 1.75em;
     transition: width $motion, height $motion;
     background-color: transparent !important;
     &--tl {
@@ -902,7 +902,7 @@ $flip: 0.6s cubic-bezier(0.075, 0.82, 0.165, 1);
     position: fixed;
     inset: 0;
     width: 100dvw;
-    height: 100vh;
+    height: 100dvh;
     padding: 1em;
     z-index: 100;
   }
