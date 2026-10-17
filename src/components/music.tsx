@@ -1,6 +1,6 @@
 "use client";
 
-import { useContext, MouseEvent, KeyboardEvent, useState, useEffect, useRef } from "react";
+import { useContext, MouseEvent, KeyboardEvent, useState, useEffect, useRef, useMemo } from "react";
 import { CursorContext } from "./cursorcontext";
 import { isInteractive } from "./cursor_changer";
 import ReactLenis from "lenis/react";
@@ -303,6 +303,33 @@ export default function SideStrip() {
     cursorSetter(isInteractive(e.target) ?? "plus");
   };
 
+  const isMobile = useMemo(() => window.innerWidth < 768, []);
+
+  function InnerContent() {
+    return (
+      <div className="side-strip__full">
+          {path.length > 1 && <ChannelRow label="../" onOpen={goUp} />}
+          {items?.map((item) =>
+            item.kind === "channel" ? (
+              <ChannelRow
+                key={item.id}
+                label={`${item.title} (${item.count})`}
+                onOpen={() => openChannel(item)}
+              />
+            ) : (
+              <AudioBlockComponent
+                key={item.id}
+                block={item}
+                isCurrent={currentBlock?.id === item.id}
+                isPlaying={isPlaying}
+                onToggle={() => toggleBlock(item)}
+              />
+            )
+          )}
+        </div>
+    )
+  }
+
   return (
     <>
       <audio
@@ -324,8 +351,7 @@ export default function SideStrip() {
         flexGrow: 1, 
         display: "flex", 
         flexDirection: "column", 
-        minHeight: 0, 
-        overflow: "hidden",
+
         opacity: items ? 1 : 0, transition: "opacity 0.5s" 
       }}
     >
@@ -334,35 +360,19 @@ export default function SideStrip() {
         <div className="side-strip__corner side-strip__corner--tr" />
       </div>
 
-      <ReactLenis 
-        className="side-strip__scroll" 
-        options={{ 
-          orientation: "vertical", 
-          gestureOrientation: "vertical", 
-          lerp: 0.9
-        }}
-      >
-        <div className="side-strip__full">
-          {path.length > 1 && <ChannelRow label="../" onOpen={goUp} />}
-          {items?.map((item) =>
-            item.kind === "channel" ? (
-              <ChannelRow
-                key={item.id}
-                label={`${item.title} (${item.count})`}
-                onOpen={() => openChannel(item)}
-              />
-            ) : (
-              <AudioBlockComponent
-                key={item.id}
-                block={item}
-                isCurrent={currentBlock?.id === item.id}
-                isPlaying={isPlaying}
-                onToggle={() => toggleBlock(item)}
-              />
-            )
-          )}
-        </div>
-      </ReactLenis>
+      {isMobile ? 
+        <InnerContent/> :
+        <ReactLenis 
+          className="side-strip__scroll" 
+          options={{ 
+            orientation: "vertical", 
+            gestureOrientation: "vertical", 
+            lerp: 0.9
+          }}
+        >
+          <InnerContent/>
+        </ReactLenis> 
+      }
 
       <div className="side-strip__corners side-strip__corners--bottom">
         <div className="side-strip__corner side-strip__corner--bl" />

@@ -213,6 +213,8 @@ function ShowGrid({
   );
 }
 
+
+
 export default function Shows() {
   const [showBlocks, setShowBlocks] = useState<ShowBlock[] | null>(null);
   const [selectedImg, setSelectedImg] = useState<string | null>(null);
@@ -269,17 +271,11 @@ export default function Shows() {
 
   const select = useCallback((url: string) => setSelectedImg(url), []);
 
-  return (
-    <>
-      <ReactLenis
-        className="side-strip__scroll"
-        options={{
-          orientation: "vertical",
-          gestureOrientation: "vertical",
-          lerp: 0.9,
-        }}
-      >
-        <div>
+  const isMobile = useMemo(() => window.innerWidth < 768, []);
+
+  function InnerContent() {
+    return (
+      <div>
           {upcoming.length > 0 && (
             <section className="show-section">
               <div className="show-card show-card__section-title">
@@ -305,7 +301,27 @@ export default function Shows() {
             </section>
           )}
         </div>
-      </ReactLenis>
+    )
+  }
+
+  return (
+    <>
+      {isMobile ? 
+        <InnerContent/> :
+        <ReactLenis
+          className="side-strip__scroll"
+          options={{
+            orientation: "vertical",
+            gestureOrientation: "vertical",
+            lerp: 0.9,
+          }}
+          style={{
+            opacity: showBlocks ? 1 : 0,
+          }}
+        >
+        <InnerContent/> 
+        </ReactLenis>
+      }
       <div
         className="image-display"
         style={{

@@ -7,7 +7,6 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
         <SideStrip/>
         <div
           className={`side-strip strip-width-about`}
-          style={{ height: `calc(100dvh - 2em)` }}
         >
         {children}
         </div>

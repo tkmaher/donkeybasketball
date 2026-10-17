@@ -158,9 +158,19 @@ $sizes-collapsed: (
 }
 
 
+@mixin molecule-action {
+  animation: flicker 0.1s ease-in-out;
+  animation-fill-mode: forwards;
+  border-color: v.$copy;
+  color: v.$copy;
+  z-index: 99 !important;
+  path {
+    fill: v.$copy !important;
+  }
+}
+
 .side-strip-menu {
   height: calc(100dvh - 2em);
-  min-width: 10%;
 
   &__titles {
     font-size: fsize(lg);
@@ -190,6 +200,8 @@ $sizes-collapsed: (
 .side-strip-music {
   flex: 1 1 0;
   min-width: 18em;
+  min-height: 0;
+  overflow: hidden;
 }
 
 .side-strip-show {
@@ -204,9 +216,12 @@ $sizes-collapsed: (
   gap: 1em;
   flex-direction: column;
 
-  &:hover &__corner {
-    width: 1.75em;
-    height: 1.75em;
+  @media (hover: hover) {
+
+    &:hover &__corner {
+      width: 1.75em;
+      height: 1.75em;
+    }
   }
 
   transition:
@@ -456,6 +471,7 @@ $sizes-collapsed: (
     min-height: 0;      // lets a flex child shrink below its content height
     overflow-y: auto;
     overscroll-behavior: contain;
+    transition: opacity $motion;
   }
 
   &__nav-row {
@@ -534,15 +550,14 @@ $sizes-collapsed: (
     transform: skewX(0deg);
     transition:
     all $motion;
-    &:hover, &:active, &:focus {
-      animation: flicker 0.1s ease-in-out;
-      animation-fill-mode: forwards;
-      border-color: v.$copy;
-      color: v.$copy;
-      z-index: 99 !important;
-      path {
-        fill: v.$copy !important;
+    @media(hover: hover) {
+      &:hover {
+
+        @include molecule-action;
       }
+    }
+    &:active, &:focus {
+      @include molecule-action;
     }
   }
 
@@ -562,7 +577,10 @@ $sizes-collapsed: (
 
 // Width classes for transitions
 .strip-width-home { width: 100%; }
-.strip-width-about { min-width: calc(70% - 1em); }
+.strip-width-about { 
+  min-width: calc(70% - 1em); 
+  height: calc(100dvh - 2em);
+}
 
 /* Make ReactLenis container fill the strip */
 .side-strip > .lenis-container {
@@ -765,9 +783,12 @@ $flip: 0.6s cubic-bezier(0.075, 0.82, 0.165, 1);
     &--br { bottom: 0; right: 0; border-bottom: 0.5px solid white; border-right: 0.5px solid white; }
   }
 
-  &:hover &__corner {
-    width: 1.75em;
-    height: 1.75em;
+  @media (hover: hover) {
+
+    &:hover &__corner {
+      width: 1.75em;
+      height: 1.75em;
+    }
   }
 }
 
@@ -795,5 +816,90 @@ $flip: 0.6s cubic-bezier(0.075, 0.82, 0.165, 1);
 @media (prefers-reduced-motion: reduce) {
   .show-card__inner {
     transition-duration: 0.01ms;
+  }
+}
+
+
+@media (max-width: 768px) {
+  html { height: auto; overflow-x: hidden; overflow-y: auto; }
+  body { overflow: visible; }
+
+  .side-strip__scroll {
+    flex: none;
+    overflow: visible;
+    overscroll-behavior: auto;
+  }
+  
+  .side-strip-show {
+    flex: none;
+    min-height: 0;
+    height: auto;
+    align-self: stretch;  
+  }
+  .strip-row {
+    flex-direction: column;
+  }
+  .mouse-circle {
+    display: none;
+  }
+
+  .side-strip {
+    &__title1 {
+      font-size: 2em !important;
+    }
+    &__scroll {
+      flex: none;
+    }
+    &__so {
+      flex-direction: column;
+      padding: 0;
+      img {
+        max-width: 100%;
+      }
+    }
+  }
+  .side-strip-menu {
+    min-width: 100% !important;
+    width: 100% !important;
+    height: 30em;         
+    max-height: none;
+  }
+  .side-strip--home {
+    max-width: 100% !important;
+    width: 100% !important;
+    height: calc(100svh - 2em);
+  }
+
+  .show-section {
+    flex-direction: column;
+  }
+
+  .strip-width-about {
+    min-width: 100%;
+    height: auto;
+    flex-direction: column-reverse;
+  }
+
+  .side-strip-music {
+    min-height: unset;
+    overflow: visible;
+  }
+
+  .side-strip-about {
+    height: auto;
+  }
+
+  .show-card__section-title {
+    min-width: 0;
+    width: 100%;
+  }
+
+  .image-display {
+    position: fixed;
+    inset: 0;
+    width: 100dvw;
+    height: 100vh;
+    padding: 1em;
+    z-index: 100;
   }
 }
