@@ -58,6 +58,9 @@ export default function SideStrip() {
       const data = await res.json();
       alert(`Error: ${data.error}`);
     }
+    if (document.activeElement instanceof HTMLElement) {
+      document.activeElement.blur();
+    }
   };
 
   useEffect(() => {
